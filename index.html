@@ -20,6 +20,7 @@
 
     *{ box-sizing:border-box; }
     html, body{ height:100%; }
+
     body{
       font-family: 'Nunito', sans-serif;
       background: #555;
@@ -31,7 +32,7 @@
     }
 
     /* =========================
-       ✅ SIDEBAR LEFT (DESKTOP)
+       ✅ SIDEBAR (DESKTOP)
        ========================= */
     .sidebar{
       position: fixed;
@@ -92,7 +93,7 @@
     .btn-pdf{ background: var(--primary); color:#fff; }
 
     /* =========================
-       ✅ Devise & TVA (DESKTOP)
+       ✅ Devise & TVA
        ========================= */
     .currency-wrap{ position: relative; width: 100%; height: 46px; }
 
@@ -167,13 +168,14 @@
       z-index: 1200;
     }
 
+    /* desktop hover */
     .currency-wrap:hover .currency-menu{
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
     }
 
-    /* ✅ MOBILE: hover ماكيخدمش، غادي نتحكمو بالـ class .open من JS */
+    /* mobile click toggle */
     .currency-wrap.open .currency-menu{
       opacity: 1;
       transform: translateX(0);
@@ -193,7 +195,7 @@
     .currency-menu input{ text-align:center; }
 
     /* =========================
-       ✅ Page A4 + responsive scale
+       ✅ Page A4
        ========================= */
     .page-a4{
       width: 210mm;
@@ -207,7 +209,6 @@
       overflow: hidden;
       z-index: 1;
       margin-top: 0;
-      transform-origin: top center;
     }
 
     .watermark-container{
@@ -341,7 +342,7 @@
 
     .no-print{ display:block; }
 
-    /* ✅ Modal clients (نفس ديالك) */
+    /* ✅ Modal clients */
     .modal-backdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 18px; }
     .modal-backdrop.open{ display:flex; }
     .modal{ width: min(980px, 96vw); height: min(620px, 86vh); background: rgba(255,255,255,0.94); border: 1px solid rgba(255,255,255,0.30); border-radius: 22px; box-shadow: 0 25px 80px rgba(0,0,0,0.35); backdrop-filter: blur(14px); overflow: hidden; }
@@ -366,26 +367,27 @@
     .empty-state{ padding: 30px; text-align:center; color:#64748b; font-weight: 900; background: rgba(255,255,255,0.7); border: 1px dashed rgba(148,163,184,0.5); border-radius: 18px; }
 
     /* =========================
-       ✅ MOBILE RESPONSIVE
+       ✅ MOBILE (FIX iPhone overlay)
        ========================= */
     @media (max-width: 980px){
       body{
-        padding: 14px !important;
-        padding-top: 308px !important; /* مكان sidebar */
-        padding-left: 14px !important;
         display:block;
+        padding: 14px !important;
+        padding-top: calc(14px + env(safe-area-inset-top)) !important;
+        padding-left: 14px !important;
       }
 
+      /* ✅ sidebar مايبقاش fixed فوق الفاتورة */
       .sidebar{
-        position: fixed;
-        top: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(560px, calc(100vw - 24px));
-        gap: 12px;
+        position: sticky;
+        top: calc(12px + env(safe-area-inset-top));
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto 14px auto;
+        z-index: 20;
       }
-
-      .currency-wrap{ height: 46px; }
 
       .currency-menu{
         left: 0;
@@ -393,38 +395,55 @@
         width: 100%;
       }
 
-      /* ✅ خليه responsive ويصغر مع الشاشة */
+      /* ✅ invoice responsive بلا scale */
       .page-a4{
-        width: 210mm;
+        width: calc(100vw - 28px);
+        max-width: 210mm;
+        min-height: auto;
         margin: 0 auto;
+        transform: none !important;
       }
 
-      /* تحسينات صغار للموبايل */
       .header{ padding: 18px 18px 10px 18px; }
       .body{ padding: 18px; }
       .logo-box img{ height: 150px; margin-top: -20px; }
       .title{ font-size: 3rem; margin-left: 10px; }
       .meta{ margin-top: 18px; }
       .grid{ grid-template-columns: 1fr; }
-      .grid > div:first-child{ border-right: none; padding-right: 0; border-bottom: 3px solid var(--gold); padding-bottom: 14px; }
+      .grid > div:first-child{
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 3px solid var(--gold);
+        padding-bottom: 14px;
+      }
       .client-section{ padding-left: 0; padding-top: 14px; }
       .payment-box{ min-width: 100%; }
       .footer{ padding: 12px 18px; flex-direction: column; gap: 6px; }
     }
 
-    /* ✅ Very small phones */
     @media (max-width: 420px){
-      body{ padding-top: 318px !important; }
       .title{ font-size: 2.5rem; }
       .logo-box img{ height: 130px; }
       .totals-box{ width: 100%; }
       .totals-section{ justify-content: stretch; }
+    }
+
+    /* ✅ Print / PDF */
+    @media print{
+      body{ padding:0 !important; background:#fff !important; }
+      .sidebar, .no-print{ display:none !important; }
+      .page-a4{
+        width: 210mm !important;
+        min-height: 296mm !important;
+        max-width: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- ✅ SIDEBAR -->
   <div class="sidebar no-print">
     <div class="panel">
       <button class="btn btn-clients" id="openClients">
@@ -590,7 +609,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="footer">
@@ -611,21 +629,6 @@
       return window.matchMedia("(max-width: 980px)").matches;
     }
 
-    function updateInvoiceScale(){
-      const invoice = document.getElementById("invoice");
-      if(!invoice) return;
-
-      // A4 width in px (approx at 96dpi): 210mm ~ 794px
-      const targetWidth = 794;
-      const available = Math.min(window.innerWidth - 28, 980); // padding safe
-      const scale = Math.min(1, available / targetWidth);
-
-      invoice.style.transform = `scale(${scale})`;
-      invoice.style.marginBottom = (scale < 1 ? (targetWidth * (1-scale) * 0.6) : 0) + "px";
-    }
-
-    window.addEventListener("resize", updateInvoiceScale);
-
     window.onload = () => {
       flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", animate:true, disableMobile:true });
       document.getElementById('invoiceNum').value = Math.floor(10000 + Math.random() * 90000);
@@ -634,30 +637,26 @@
       updatePreview();
       calc();
       renderClients();
-
-      updateInvoiceScale();
       setupCurrencyToggleMobile();
     };
 
     function setupCurrencyToggleMobile(){
       const wrap = document.getElementById("currencyWrap");
       const fab = document.getElementById("currencyFab");
+      const menu = document.getElementById("currencyMenu");
 
-      // فالموبايل: click باش يفتح menu
       fab.addEventListener("click", (e) => {
-        if(!isMobile()) return; // desktop hover كافي
+        if(!isMobile()) return;
         e.stopPropagation();
         wrap.classList.toggle("open");
       });
 
-      // click خارج menu يسدو
+      menu.addEventListener("click", (e) => e.stopPropagation());
+
       document.addEventListener("click", (e) => {
         if(!isMobile()) return;
         if(!wrap.contains(e.target)) wrap.classList.remove("open");
       });
-
-      // منع الإغلاق ملي كتضغط داخل menu
-      document.getElementById("currencyMenu").addEventListener("click", (e) => e.stopPropagation());
     }
 
     function updatePreview(){
@@ -749,7 +748,7 @@
     }
 
     /* =========================
-       ✅ Clients localStorage (نفس ديالك)
+       ✅ Clients localStorage
        ========================= */
     const STORAGE_KEY = "delicella_clients_v1";
 
