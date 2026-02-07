@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Facture Delicella - Historique & Espacé</title>
+  <title>Facture Delicella - Mobile Fixed</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -27,6 +27,8 @@
       align-items:flex-start;
       min-height:100vh;
       margin: 0;
+      /* Scroll smooth */
+      overflow-x: hidden;
     }
 
     /* Sidebar */
@@ -264,7 +266,10 @@
       body {
         padding: 0 !important;
         display: block !important;
-        background: #333; 
+        background: #333;
+        /* 🔥 AJOUT IMPORTANT : Padding extra en bas pour le scroll */
+        padding-bottom: 150px !important;
+        min-height: 100vh;
       }
       .sidebar{
         position:relative!important;
@@ -513,12 +518,18 @@
       const screenWidth = window.innerWidth;
 
       if(screenWidth < 980){
+        // Mobile Mode
         const scale = (screenWidth - 20) / originalWidth; 
         invoice.style.transform = `scale(${scale})`;
-        const newHeight = (invoice.offsetHeight * scale) + 50;
+        
+        // 🔥 CALCUL CORRIGÉ POUR L'ESPACE EN BAS
+        const newHeight = (invoice.offsetHeight * scale);
         wrap.style.height = newHeight + "px";
-        wrap.style.marginBottom = "80px"; 
+        
+        // 🔥 AJOUT DE MARGE EXTRA POUR LE SCROLL
+        wrap.style.marginBottom = "150px"; 
       } else {
+        // Desktop Mode
         invoice.style.transform = "none";
         wrap.style.height = "auto";
         wrap.style.marginBottom = "0";
