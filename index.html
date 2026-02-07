@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Facture Delicella - A4 Fixed</title>
+  <title>Facture Delicella - Vendeur Fixe</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
-    :root{--primary:#d6001c;--gold:#cfb04a;--dark:#1e293b;--bg:#fff1f1}
+    :root{--primary:#d6001c;--gold:#cfb04a;--dark:#1e293b;--bg:#fff1f1;--sheet:#0F9D58}
 
     body{
       font-family:'Nunito',sans-serif;
@@ -65,8 +65,19 @@
     .btn-saveinfo{background:var(--gold);color:#1e293b}
     .btn-add{background:var(--gold);color:#1e293b}
     .btn-pdf{background:var(--primary);color:#fff}
+    
+    /* Bouton Identité Vendeur */
+    .btn-user{background:#3b82f6;color:#fff; font-size: 0.9rem;}
 
-    /* TVA / DEVISE Button Fix */
+    /* Indicateur Synchro */
+    #syncStatus {
+        text-align: center; font-size: 0.8rem; font-weight: 800; color: rgba(255,255,255,0.7); margin-top: -5px;
+        transition: color 0.3s;
+    }
+    #vendeurDisplay {
+        text-align: center; color: #4ade80; font-weight: 900; font-family: 'Lexend'; font-size: 1rem; margin-bottom: 5px; cursor: default;
+    }
+
     .currency-wrap{
       position:relative; width:100%; height:46px; display: flex; justify-content: center;
     }
@@ -99,7 +110,7 @@
     }
     .currency-menu input{text-align:center}
 
-    /* 🔥 CALENDAR STYLE */
+    /* Calendar & Layout */
     .flatpickr-calendar { background: #fff; border: none !important; border-radius: 18px !important; box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; font-family: 'Lexend', sans-serif !important; padding: 0 !important; overflow: hidden; width: 310px !important; }
     .flatpickr-calendar:before, .flatpickr-calendar:after { display: none !important; }
     .flatpickr-month { background: var(--primary) !important; color: #fff !important; fill: #fff !important; height: 55px !important; padding-top: 10px !important; }
@@ -111,105 +122,49 @@
     .flatpickr-day { font-weight: 700 !important; color: #333 !important; border-radius: 50% !important; margin-top: 5px !important; height: 38px !important; line-height: 38px !important; border: 1px solid transparent !important; }
     .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: var(--primary) !important; color: #fff !important; border-color: var(--primary) !important; box-shadow: 0 4px 12px rgba(214, 0, 28, 0.4) !important; }
 
-    /* Invoice Wrapper */
-    #invoiceWrap{
-      width:100%;
-      display:flex;
-      justify-content:center;
-      overflow:visible;
-      transform-origin: top center; 
-      transition: height 0.3s ease;
-    }
+    #invoiceWrap{ width:100%; display:flex; justify-content:center; overflow:visible; transform-origin: top center; transition: height 0.3s ease; }
 
-    /* A4 Page - DIMENSIONS STANDARD */
-    .page-a4{
-      width:210mm;
-      min-height:296mm;
-      min-width: 793px; 
-      background:#fff;
-      position:relative;
-      display:flex;flex-direction:column;
-      box-shadow:0 10px 30px rgba(0,0,0,.30);
-      padding:0;overflow:hidden;z-index:1;margin-top:0;
-      transform-origin: top center;
-    }
-
-    .watermark-container{
-      position:absolute;inset:0;
-      display:flex;justify-content:center;align-items:center;
-      z-index:0;opacity:.08;pointer-events:none;
-    }
+    .page-a4{ width:210mm; min-height:296mm; min-width: 793px; background:#fff; position:relative; display:flex;flex-direction:column; box-shadow:0 10px 30px rgba(0,0,0,.30); padding:0;overflow:hidden;z-index:1;margin-top:0; transform-origin: top center; }
+    .watermark-container{ position:absolute;inset:0; display:flex;justify-content:center;align-items:center; z-index:0;opacity:.08;pointer-events:none; }
     .watermark-container img{width:75%;height:auto}
     .header,.body,.footer{position:relative;z-index:2}
 
-    /* 🔥 PADDING AJUSTÉ POUR RENTRER DANS 1 PAGE */
-    .header{
-      background:rgba(255,241,241,.85);
-      padding:25px 40px 10px 40px; 
-      border-bottom:4px solid var(--gold);
-      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
-    }
+    .header{ background:rgba(255,241,241,.85); padding:25px 40px 10px 40px; border-bottom:4px solid var(--gold); display:flex;justify-content:space-between;align-items:flex-start;gap:12px; }
     .header-left{display:flex;flex-direction:column}
-    .title{
-      font-family:'Lexend';font-size:4rem;color:var(--primary);
-      margin:0;line-height:1;text-transform:uppercase;letter-spacing:2px;margin-left:20px;
-    }
+    .title{ font-family:'Lexend';font-size:4rem;color:var(--primary); margin:0;line-height:1;text-transform:uppercase;letter-spacing:2px;margin-left:20px; }
     .meta{margin-top:35px;display:flex;flex-direction:column;gap:10px}
     .meta-row{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--dark)}
     .meta-row span{color:var(--primary);font-family:'Lexend';font-size:.9rem}
-    .meta-row input{
-      background:transparent;border:none;font-weight:800;font-size:1.1rem;color:var(--dark);
-      width:140px;cursor:pointer;outline:none;
-    }
+    .meta-row input{ background:transparent;border:none;font-weight:800;font-size:1.1rem;color:var(--dark); width:140px;cursor:pointer;outline:none; }
     .logo-box img{height:220px;width:auto;margin-top:-40px}
 
-    /* 🔥 CORPS AJUSTÉ */
     .body{padding:25px 40px;flex:1;display:flex;flex-direction:column}
-
     .grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:0;margin-bottom:30px}
     .grid>div:first-child{border-right:3px solid var(--gold);padding-right:25px}
     .client-section{padding-left:25px}
 
-    .box-title{
-      color:#000;font-size:.85rem;font-weight:800;display:inline-block;
-      padding-bottom:6px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1px;line-height:1;
-      box-shadow:inset 0 -3px 0 var(--primary);
-    }
+    .box-title{ color:#000;font-size:.85rem;font-weight:800;display:inline-block; padding-bottom:6px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1px;line-height:1; box-shadow:inset 0 -3px 0 var(--primary); }
     .company-info{font-size:.95rem;line-height:1.5;color:var(--dark)}
 
     .input-group{display:flex;align-items:flex-start;margin-bottom:8px;border-bottom:1px dashed #ccc;padding-bottom:4px}
-    .input-group label{
-      font-weight:700;color:var(--dark);font-size:.85rem;min-width:145px;
-      font-family:'Lexend';padding-top:5px;text-transform:uppercase;
-    }
-    .input-group input{
-      flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;
-      padding:5px 0 5px 10px;outline:none;
-    }
-
+    .input-group label{ font-weight:700;color:var(--dark);font-size:.85rem;min-width:145px; font-family:'Lexend';padding-top:5px;text-transform:uppercase; }
+    .input-group input{ flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000; padding:5px 0 5px 10px;outline:none; }
     .flow-box{border-bottom:1px dashed #ccc;margin-bottom:8px;padding-bottom:6px;cursor:text;display:block}
     .flow-box label{font-weight:700;color:var(--dark);font-size:.85rem;font-family:'Lexend';text-transform:uppercase;display:inline;margin-right:5px}
     .flow-content{display:inline;font-weight:600;font-size:.95rem;color:#000;outline:none;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
     .flow-content:empty:before{content:'...';color:#aaa;font-weight:400}
-
     .phone-wrapper{display:flex;align-items:center;flex:1}
     .phone-select{border:none;background:transparent;font-weight:800;font-size:.9rem;color:var(--primary);cursor:pointer;margin-right:8px;outline:none}
     .phone-input{flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;outline:none;padding:5px 0 5px 10px}
 
     table{width:100%;border-collapse:collapse;margin-top:15px}
-    th{
-      text-align:left;padding:10px 6px;color:var(--primary);
-      font-family:'Lexend';font-size:.85rem;border-bottom:none!important;
-    }
+    th{ text-align:left;padding:10px 6px;color:var(--primary); font-family:'Lexend';font-size:.85rem;border-bottom:none!important; }
     thead{position:relative}
     thead:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--primary)}
     td{padding:10px 6px;border-bottom:1px solid #f0f0f0}
     td input{width:100%;border:none;font-weight:700;font-size:.95rem;background:transparent;outline:none}
 
-    .delete-btn{
-      background:transparent;border:none;cursor:pointer;color:var(--primary);
-      font-weight:900;font-size:1.1rem;padding:2px 6px;border-radius:6px;line-height:1;
-    }
+    .delete-btn{ background:transparent;border:none;cursor:pointer;color:var(--primary); font-weight:900;font-size:1.1rem;padding:2px 6px;border-radius:6px;line-height:1; }
     .delete-btn:hover{background:rgba(214,0,28,.10)}
 
     .totals-section{display:flex;justify-content:flex-end;margin-top:25px}
@@ -238,7 +193,6 @@
     .modal-close{border:none;background:transparent;font-size:1.35rem;font-weight:900;cursor:pointer;color:#0f172a;width:42px;height:42px;border-radius:12px}
     .modal-close:hover{background:rgba(15,23,42,.08)}
     .modal-body{padding:18px;overflow:auto; flex: 1;}
-    
     .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
     .client-card{background:rgba(255,255,255,.92);border:1px solid rgba(148,163,184,.30);border-radius:18px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.10);display:flex;flex-direction:column;gap:10px;min-height:170px}
     .avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lexend';font-weight:900;color:#fff;background:var(--primary)}
@@ -249,8 +203,8 @@
     .choose-btn{flex:1;height:38px;border-radius:12px;border:none;background:#111827;color:#fff;font-family:'Lexend';font-weight:900;cursor:pointer}
     .trash-btn{width:42px;height:38px;border-radius:12px;border:none;cursor:pointer;background:rgba(239,68,68,.12);color:#ef4444;font-size:1.05rem}
     .empty-state{padding:30px;text-align:center;color:#64748b;font-weight:900;background:rgba(255,255,255,.7);border:1px dashed rgba(148,163,184,.5);border-radius:18px}
-
-    /* History Table Styles */
+    
+    /* History Table */
     .history-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
     .history-table th { color: var(--primary); font-family: 'Lexend'; padding: 10px; text-align: left; }
     .history-table td { background: rgba(255,255,255,0.8); padding: 14px; font-weight: 700; color: #1e293b; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
@@ -261,45 +215,14 @@
     .btn-load { background: #3b82f6; color: white; }
     .btn-del { background: #ef4444; color: white; }
 
-    /* ✅ iPhone/Mobile Media Query */
     @media (max-width:980px){
       input,select,textarea{font-size:16px!important} 
-      body {
-        padding: 0 !important;
-        display: block !important;
-        background: #333;
-        /* Scroll important pour mobile seulement */
-        padding-bottom: 150px !important;
-        min-height: 100vh;
-      }
-      .sidebar{
-        position:relative!important;
-        top:0!important;left:0!important;
-        width:100%!important;
-        transform:none!important;
-        margin-bottom:14px!important;
-        opacity:1!important;
-        animation:none!important;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-      .panel {
-        flex-direction: row; flex-wrap: wrap; justify-content: center;
-      }
-      .panel button {
-        flex: 1 1 45%; min-width: 130px;
-      }
-      .currency-menu{
-          left: 50% !important;
-          transform: translateX(-50%) translateY(10px) !important;
-          top: 46px !important;
-          width: 280px !important;
-      }
-      
-      #invoice {
-        margin: 0 auto;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      }
+      body { padding: 0 !important; display: block !important; background: #333; padding-bottom: 150px !important; min-height: 100vh; }
+      .sidebar{ position:relative!important; top:0!important;left:0!important; width:100%!important; transform:none!important; margin-bottom:14px!important; opacity:1!important; animation:none!important; padding: 10px; box-sizing: border-box; }
+      .panel { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+      .panel button { flex: 1 1 45%; min-width: 130px; }
+      .currency-menu{ left: 50% !important; transform: translateX(-50%) translateY(10px) !important; top: 46px !important; width: 280px !important; }
+      #invoice { margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
     }
   </style>
 </head>
@@ -308,6 +231,11 @@
 
   <div class="sidebar no-print">
     <div class="panel">
+      <div id="vendeurDisplay" ondblclick="setVendeurName(true)"></div>
+      <button class="btn btn-user" id="btnProfile" type="button" onclick="setVendeurName(false)">
+        <i class="fa-solid fa-user-pen"></i> Mon Profil
+      </button>
+      
       <button class="btn btn-clients" id="openClients">
         <i class="fa-solid fa-users"></i> Clients
       </button>
@@ -335,6 +263,7 @@
     </div>
 
     <div class="panel">
+      <div id="syncStatus"></div>
       <button class="btn btn-add" type="button" onclick="addLine()">
         <i class="fa-solid fa-plus"></i> Ajouter Ligne
       </button>
@@ -421,27 +350,22 @@
 
           <div class="client-section">
             <span class="box-title">DESTINATAIRE</span>
-
             <div class="input-group">
               <label>Nom du client :</label>
               <input type="text" id="c_name" placeholder="...">
             </div>
-
             <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
               <label>Société Nom :</label>
               <span class="flow-content" id="c_company" contenteditable="true"></span>
             </div>
-
             <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
               <label>ICE :</label>
               <span class="flow-content" id="c_ice" contenteditable="true"></span>
             </div>
-
             <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
               <label>Adresse :</label>
               <span class="flow-content" id="c_address" contenteditable="true"></span>
             </div>
-
             <div class="input-group">
               <label>N° Téléphone :</label>
               <div class="phone-wrapper">
@@ -489,7 +413,6 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="footer">
@@ -505,32 +428,59 @@
   </datalist>
 
   <script>
+    /* 🚨 METS TON LIEN GOOGLE SCRIPT ICI 🚨 */
+    const GOOGLE_SCRIPT_URL = "TON_LIEN_GOOGLE_SCRIPT_ICI"; 
+    
     const currencySymbols = { MAD: "DH", EUR: "€", USD: "$" };
 
     /* =========================
-       🔥 IPHONE/PC SCALING 🔥
+       VENDEUR LOGIC (SÉCURISÉ)
+       ========================= */
+    let currentVendeur = localStorage.getItem("delicella_vendeur_name") || "Inconnu";
+
+    function initVendeur(){
+        const display = document.getElementById("vendeurDisplay");
+        const btn = document.getElementById("btnProfile");
+
+        if(currentVendeur && currentVendeur !== "Inconnu"){
+            // SI DÉJÀ CONNECTÉ : On cache le bouton, on montre le nom
+            display.innerText = "Connecté : " + currentVendeur;
+            if(btn) btn.style.display = "none"; 
+        } else {
+            // SI NON CONNECTÉ : On force la question
+            setVendeurName(false);
+        }
+    }
+
+    function setVendeurName(force = false){
+        // Si c'est déjà défini et qu'on ne force pas (clic normal), on sort
+        if(!force && currentVendeur !== "Inconnu") return;
+
+        let msg = force ? "ADMIN: Changer le nom ?" : "Entrez votre Nom (Une seule fois !):";
+        let nom = prompt(msg, currentVendeur !== "Inconnu" ? currentVendeur : "");
+        
+        if(nom && nom.trim() !== ""){
+            localStorage.setItem("delicella_vendeur_name", nom.trim());
+            location.reload(); // On recharge pour appliquer
+        }
+    }
+
+    /* =========================
+       IPHONE/PC SCALING
        ========================= */
     function applyDesktopScale(){
       const invoice = document.getElementById("invoice");
       const wrap = document.getElementById("invoiceWrap");
       if(!invoice || !wrap) return;
-
       const originalWidth = 793; 
       const screenWidth = window.innerWidth;
-
       if(screenWidth < 980){
-        // Mobile Mode
         const scale = (screenWidth - 20) / originalWidth; 
         invoice.style.transform = `scale(${scale})`;
-        
-        // 🔥 CALCUL CORRIGÉ
         const newHeight = (invoice.offsetHeight * scale);
         wrap.style.height = newHeight + "px";
-        
-        // 🔥 AJOUT DE MARGE EXTRA POUR LE SCROLL
         wrap.style.marginBottom = "150px"; 
       } else {
-        // Desktop Mode
         invoice.style.transform = "none";
         wrap.style.height = "auto";
         wrap.style.marginBottom = "0";
@@ -542,12 +492,10 @@
        ========================= */
     window.onload = () => {
       flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", animate:true, disableMobile:true });
-      
-      // Init Facture Num if empty
       if(!document.getElementById('invoiceNum').value) {
         document.getElementById('invoiceNum').value = Math.floor(10000 + Math.random() * 90000);
       }
-
+      initVendeur(); // Check ID first
       addLine(); addLine();
       updatePreview();
       calc();
@@ -561,49 +509,24 @@
       const cur = document.getElementById("currency").value || "MAD";
       const tva = parseFloat(document.getElementById("tvaRate").value);
       document.getElementById("curPreview").innerText = cur;
-      // ✅ Si pas de nombre, mettre 0% au lieu de 20%
       document.getElementById("tvaPreview").innerText = (isNaN(tva) ? 0 : tva) + "%";
     }
-
-    function getCurrencySymbol(){
-      const cur = document.getElementById('currency')?.value || "MAD";
-      return currencySymbols[cur] || "DH";
-    }
-    function getTvaRate(){
-      const v = parseFloat(document.getElementById('tvaRate')?.value);
-      // ✅ Si pas de nombre, mettre 0% au lieu de 20%
-      return isNaN(v) ? 0 : v;
-    }
+    function getCurrencySymbol(){ const cur = document.getElementById('currency')?.value || "MAD"; return currencySymbols[cur] || "DH"; }
+    function getTvaRate(){ const v = parseFloat(document.getElementById('tvaRate')?.value); return isNaN(v) ? 0 : v; }
 
     function addLine(desc="", qty=1, price="") {
       const sym = getCurrencySymbol();
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" class="desc" list="produits-list" placeholder="Article ou Service..." value="${desc}"></td>
-        <td><input class="qty" type="number" value="${qty}" style="text-align:center" oninput="calc()"></td>
-        <td><input class="pu" type="number" placeholder="0.00" value="${price}" style="text-align:right" oninput="calc()"></td>
-        <td style="text-align:right; font-weight:800; color:#1e293b">0.00 ${sym}</td>
-        <td class="no-print" style="text-align:right;">
-          <button class="delete-btn" type="button" onclick="removeLine(this)" title="Supprimer">✖</button>
-        </td>
-      `;
+      tr.innerHTML = `<td><input type="text" class="desc" list="produits-list" placeholder="Article..." value="${desc}"></td><td><input class="qty" type="number" value="${qty}" style="text-align:center" oninput="calc()"></td><td><input class="pu" type="number" placeholder="0.00" value="${price}" style="text-align:right" oninput="calc()"></td><td style="text-align:right; font-weight:800; color:#1e293b">0.00 ${sym}</td><td class="no-print" style="text-align:right;"><button class="delete-btn" type="button" onclick="removeLine(this)">✖</button></td>`;
       document.getElementById('lines').appendChild(tr);
       calc();
       setTimeout(applyDesktopScale, 80);
     }
-
-    function removeLine(btn){
-      const row = btn.closest('tr');
-      if(row) row.remove();
-      calc();
-      setTimeout(applyDesktopScale, 80);
-    }
-
+    function removeLine(btn){ const row = btn.closest('tr'); if(row) row.remove(); calc(); setTimeout(applyDesktopScale, 80); }
     function calc() {
       const sym = getCurrencySymbol();
       const rate = getTvaRate();
       document.getElementById('tvaLabel').innerText = `TVA (${rate}%)`;
-
       let total = 0;
       document.querySelectorAll('#lines tr').forEach(row => {
         const q = parseFloat(row.querySelector('.qty')?.value) || 0;
@@ -612,10 +535,8 @@
         row.cells[3].innerText = t.toFixed(2) + " " + sym;
         total += t;
       });
-
       const tva = total * (rate / 100);
       const ttc = total + tva;
-
       document.getElementById('tht').innerText = total.toFixed(2) + " " + sym;
       document.getElementById('tva').innerText = tva.toFixed(2) + " " + sym;
       document.getElementById('ttc').innerText = ttc.toFixed(2) + " " + sym;
@@ -623,293 +544,85 @@
     }
 
     /* =========================
-       🔥 HISTORIQUE LOGIC 🔥
+       GOOGLE SHEET SEND
+       ========================= */
+    function sendToGoogleSheet() {
+      if(GOOGLE_SCRIPT_URL.includes("TON_LIEN")) return; 
+      const syncStatus = document.getElementById('syncStatus');
+      syncStatus.innerHTML = "☁️ Envoi..."; syncStatus.style.color = "yellow";
+      
+      const num = document.getElementById('invoiceNum').value;
+      const date = document.getElementById('date').value;
+      const client = (document.getElementById('c_name').value || document.getElementById('c_company').innerText || "Inconnu").trim();
+      const total = document.getElementById('ttc').innerText;
+      let itemsStr = "";
+      document.querySelectorAll('#lines tr').forEach(row => { const d = row.querySelector('.desc')?.value; const q = row.querySelector('.qty')?.value; if(d) itemsStr += `[${q}x ${d}] `; });
+
+      const payload = { date: date, id: num, vendeur: currentVendeur, client: client, total: total, items: itemsStr };
+
+      fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+      .then(() => { syncStatus.innerHTML = "✅ Saved"; syncStatus.style.color = "#4ade80"; setTimeout(() => { syncStatus.innerHTML = ""; }, 3000); })
+      .catch(err => { syncStatus.innerHTML = "❌ Error"; syncStatus.style.color = "#ef4444"; });
+    }
+
+    /* =========================
+       STORAGE & PDF
        ========================= */
     const HISTORY_KEY = "delicella_invoices_history_v1";
-
     function getHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }catch{return [];} }
     function saveHistory(list){ localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); }
-
     function saveCurrentInvoiceToHistory(){
         const num = document.getElementById('invoiceNum').value;
-        if(!num) return; // Pas de num, pas de save
-
+        if(!num) return; 
         const clientData = getClientFromForm();
-        
-        // Scrap rows
         const items = [];
-        document.querySelectorAll('#lines tr').forEach(row => {
-            const desc = row.querySelector('.desc')?.value || "";
-            const qty = row.querySelector('.qty')?.value || 0;
-            const pu = row.querySelector('.pu')?.value || 0;
-            if(desc || pu) items.push({desc, qty, pu});
-        });
-
-        const invoiceData = {
-            id: num,
-            date: document.getElementById('date').value,
-            client: clientData,
-            items: items,
-            settings: {
-                currency: document.getElementById("currency").value,
-                tva: document.getElementById("tvaRate").value
-            },
-            totalTTC: document.getElementById('ttc').innerText,
-            savedAt: Date.now()
-        };
-
-        let list = getHistory();
-        // Remove existing with same ID to update
-        list = list.filter(i => i.id !== num);
-        // Add to top
-        list.unshift(invoiceData);
-        saveHistory(list);
-        toast("✅ Facture enregistrée dans l'historique");
-        renderHistory();
+        document.querySelectorAll('#lines tr').forEach(row => { const desc = row.querySelector('.desc')?.value || ""; const qty = row.querySelector('.qty')?.value || 0; const pu = row.querySelector('.pu')?.value || 0; if(desc || pu) items.push({desc, qty, pu}); });
+        const invoiceData = { id: num, date: document.getElementById('date').value, client: clientData, items: items, settings: { currency: document.getElementById("currency").value, tva: document.getElementById("tvaRate").value }, totalTTC: document.getElementById('ttc').innerText, savedAt: Date.now() };
+        let list = getHistory(); list = list.filter(i => i.id !== num); list.unshift(invoiceData); saveHistory(list); renderHistory();
     }
-
     function loadInvoiceFromHistory(id){
-        const list = getHistory();
-        const inv = list.find(i => i.id === id);
-        if(!inv) return;
-
-        // Restore fields
-        document.getElementById('invoiceNum').value = inv.id;
-        if(document.getElementById('date') && inv.date) document.getElementById('date')._flatpickr.setDate(inv.date);
-        
-        // Client
-        fillFormWithClient(inv.client);
-
-        // Settings
-        document.getElementById("currency").value = inv.settings.currency || "MAD";
-        document.getElementById("tvaRate").value = inv.settings.tva || 0; // Défaut 0 si undefined
-        updatePreview();
-
-        // Lines
-        const linesTbody = document.getElementById('lines');
-        linesTbody.innerHTML = ""; // Clear
-        inv.items.forEach(item => {
-            addLine(item.desc, item.qty, item.pu);
-        });
-        if(inv.items.length === 0) addLine();
-
-        calc();
-        closeHistoryModal();
-        toast("📂 Facture chargée !");
+        const list = getHistory(); const inv = list.find(i => i.id === id); if(!inv) return;
+        document.getElementById('invoiceNum').value = inv.id; if(document.getElementById('date') && inv.date) document.getElementById('date')._flatpickr.setDate(inv.date);
+        fillFormWithClient(inv.client); document.getElementById("currency").value = inv.settings.currency || "MAD"; document.getElementById("tvaRate").value = inv.settings.tva || 0; updatePreview();
+        const linesTbody = document.getElementById('lines'); linesTbody.innerHTML = ""; inv.items.forEach(item => { addLine(item.desc, item.qty, item.pu); }); if(inv.items.length === 0) addLine();
+        calc(); closeHistoryModal(); toast("📂 Chargée !");
     }
+    function deleteInvoiceFromHistory(id){ if(!confirm("Supprimer ?")) return; let list = getHistory(); list = list.filter(i => i.id !== id); saveHistory(list); renderHistory(); }
 
-    function deleteInvoiceFromHistory(id){
-        if(!confirm("Supprimer cette facture de l'historique ?")) return;
-        let list = getHistory();
-        list = list.filter(i => i.id !== id);
-        saveHistory(list);
-        renderHistory();
-    }
-
-    /* =========================
-       PDF & AUTO SAVE (FIXED)
-       ========================= */
     function downloadPDF() {
       saveCurrentInvoiceToHistory();
-
-      const element = document.getElementById('invoice');
-      const wrap = document.getElementById('invoiceWrap');
-      const oldTransform = element.style.transform;
-      
-      // 🔥 FIX IMPORTANT: On reset le scale et le margin du Wrapper avant de générer
-      element.style.transform = "none";
-      wrap.style.height = "auto";
-      wrap.style.marginBottom = "0"; // Enlever le vide en bas
-
-      const btn = document.querySelector('.btn-pdf');
-      const oldHTML = btn.innerHTML;
-      btn.innerHTML = "⏳ Génération...";
-
-      const opt = {
-        margin: 0,
-        filename: `Facture_${document.getElementById('invoiceNum').value}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollY: 0, ignoreElements: (el) => el.classList?.contains('no-print') },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      html2pdf().from(element).set(opt).save().then(() => {
-        btn.innerHTML = oldHTML;
-        element.style.transform = oldTransform;
-        setTimeout(applyDesktopScale, 120); // Remettre le mode mobile
-      }).catch(err => {
-        alert("Erreur: " + err);
-        btn.innerHTML = oldHTML;
-        element.style.transform = oldTransform;
-        setTimeout(applyDesktopScale, 120);
-      });
+      sendToGoogleSheet();
+      const element = document.getElementById('invoice'); const wrap = document.getElementById('invoiceWrap'); const oldTransform = element.style.transform;
+      element.style.transform = "none"; wrap.style.height = "auto"; wrap.style.marginBottom = "0";
+      const btn = document.querySelector('.btn-pdf'); const oldHTML = btn.innerHTML; btn.innerHTML = "⏳ ...";
+      const opt = { margin: 0, filename: `Facture_${document.getElementById('invoiceNum').value}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, scrollY: 0, ignoreElements: (el) => el.classList?.contains('no-print') }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+      html2pdf().from(element).set(opt).save().then(() => { btn.innerHTML = oldHTML; element.style.transform = oldTransform; setTimeout(applyDesktopScale, 120); }).catch(err => { alert("Erreur: " + err); btn.innerHTML = oldHTML; element.style.transform = oldTransform; setTimeout(applyDesktopScale, 120); });
     }
 
-    /* =========================
-       Modals & UI Logic
-       ========================= */
-    
-    // -- History Modal --
     const historyModal = document.getElementById("historyModalBackdrop");
-    document.getElementById("openHistory").addEventListener("click", () => {
-        historyModal.classList.add("open");
-        renderHistory();
-    });
+    document.getElementById("openHistory").addEventListener("click", () => { historyModal.classList.add("open"); renderHistory(); });
     document.getElementById("closeHistory").addEventListener("click", closeHistoryModal);
     function closeHistoryModal(){ historyModal.classList.remove("open"); }
-    
     document.getElementById("historySearch").addEventListener("input", renderHistory);
+    function renderHistory(){ const list = getHistory(); const q = document.getElementById("historySearch").value.toLowerCase(); const tbody = document.getElementById("historyList"); const empty = document.getElementById("historyEmpty"); tbody.innerHTML = ""; const filtered = list.filter(i => i.id.toString().toLowerCase().includes(q) || (i.client.name||"").toLowerCase().includes(q) || (i.client.company||"").toLowerCase().includes(q)); if(filtered.length === 0){ empty.style.display = "block"; return; } empty.style.display = "none"; filtered.forEach(inv => { const tr = document.createElement("tr"); tr.innerHTML = `<td><span class="badge-date">${inv.date}</span></td><td>#${inv.id}</td><td>${inv.client.company || inv.client.name || "Inconnu"}</td><td style="color:var(--primary); font-weight:800;">${inv.totalTTC}</td><td style="text-align:right"><button class="btn-action-sm btn-load" onclick="loadInvoiceFromHistory('${inv.id}')"><i class="fa-solid fa-pen"></i></button><button class="btn-action-sm btn-del" onclick="deleteInvoiceFromHistory('${inv.id}')"><i class="fa-solid fa-trash"></i></button></td>`; tbody.appendChild(tr); }); }
 
-    function renderHistory(){
-        const list = getHistory();
-        const q = document.getElementById("historySearch").value.toLowerCase();
-        const tbody = document.getElementById("historyList");
-        const empty = document.getElementById("historyEmpty");
-
-        tbody.innerHTML = "";
-        const filtered = list.filter(i => 
-            i.id.toString().toLowerCase().includes(q) || 
-            (i.client.name||"").toLowerCase().includes(q) || 
-            (i.client.company||"").toLowerCase().includes(q)
-        );
-
-        if(filtered.length === 0){ empty.style.display = "block"; return; }
-        empty.style.display = "none";
-
-        filtered.forEach(inv => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><span class="badge-date">${inv.date}</span></td>
-                <td>#${inv.id}</td>
-                <td>${inv.client.company || inv.client.name || "Inconnu"}</td>
-                <td style="color:var(--primary); font-weight:800;">${inv.totalTTC}</td>
-                <td style="text-align:right">
-                    <button class="btn-action-sm btn-load" onclick="loadInvoiceFromHistory('${inv.id}')"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn-action-sm btn-del" onclick="deleteInvoiceFromHistory('${inv.id}')"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-
-    /* =========================
-       Clients Logic (Existing)
-       ========================= */
     const CLIENTS_KEY = "delicella_clients_v1";
-
     function loadClients(){ try{ return JSON.parse(localStorage.getItem(CLIENTS_KEY) || "[]"); }catch(e){ return []; } }
     function saveClients(list){ localStorage.setItem(CLIENTS_KEY, JSON.stringify(list)); }
-
-    function getClientFromForm(){
-      const name = (document.getElementById("c_name").value || "").trim();
-      const company = (document.getElementById("c_company").innerText || "").trim();
-      const ice = (document.getElementById("c_ice").innerText || "").trim();
-      const address = (document.getElementById("c_address").innerText || "").trim();
-      const phoneCode = document.getElementById("c_phone_code").value || "+212";
-      const phone = (document.getElementById("c_phone").value || "").trim();
-      return { name, company, ice, address, phoneCode, phone };
-    }
-
-    function fillFormWithClient(c){
-      document.getElementById("c_name").value = c.name || "";
-      document.getElementById("c_company").innerText = c.company || "";
-      document.getElementById("c_ice").innerText = c.ice || "";
-      document.getElementById("c_address").innerText = c.address || "";
-      document.getElementById("c_phone_code").value = c.phoneCode || "+212";
-      document.getElementById("c_phone").value = c.phone || "";
-    }
-
-    function clientKey(c){
-      return ((c.phoneCode||"") + (c.phone||"")).replace(/\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
-    }
-
-    function saveCurrentClient(){
-      const c = getClientFromForm();
-      if(!c.name && !c.company){ alert("Entrez au moins un Nom ou une Société."); return; }
-      let list = loadClients();
-      const k = clientKey(c);
-      const idx = list.findIndex(x => clientKey(x) === k);
-      if(idx >= 0) list[idx] = { ...list[idx], ...c, updatedAt: Date.now() };
-      else list.unshift({ ...c, id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), createdAt: Date.now() });
-      saveClients(list);
-      renderClients();
-      toast("✅ Client sauvegardé");
-    }
-
-    function deleteClient(id){
-      const list = loadClients().filter(c => c.id !== id);
-      saveClients(list);
-      renderClients();
-    }
-
-    // Modal Clients
+    function getClientFromForm(){ const name = (document.getElementById("c_name").value || "").trim(); const company = (document.getElementById("c_company").innerText || "").trim(); const ice = (document.getElementById("c_ice").innerText || "").trim(); const address = (document.getElementById("c_address").innerText || "").trim(); const phoneCode = document.getElementById("c_phone_code").value || "+212"; const phone = (document.getElementById("c_phone").value || "").trim(); return { name, company, ice, address, phoneCode, phone }; }
+    function fillFormWithClient(c){ document.getElementById("c_name").value = c.name || ""; document.getElementById("c_company").innerText = c.company || ""; document.getElementById("c_ice").innerText = c.ice || ""; document.getElementById("c_address").innerText = c.address || ""; document.getElementById("c_phone_code").value = c.phoneCode || "+212"; document.getElementById("c_phone").value = c.phone || ""; }
+    function clientKey(c){ return ((c.phoneCode||"") + (c.phone||"")).replace(/\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase(); }
+    function saveCurrentClient(){ const c = getClientFromForm(); if(!c.name && !c.company){ alert("Erreur: Nom requis."); return; } let list = loadClients(); const k = clientKey(c); const idx = list.findIndex(x => clientKey(x) === k); if(idx >= 0) list[idx] = { ...list[idx], ...c, updatedAt: Date.now() }; else list.unshift({ ...c, id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), createdAt: Date.now() }); saveClients(list); renderClients(); toast("✅ Client sauvegardé"); }
+    function deleteClient(id){ const list = loadClients().filter(c => c.id !== id); saveClients(list); renderClients(); }
     const clientModal = document.getElementById("clientsModalBackdrop");
-    document.getElementById("openClients").addEventListener("click", () => {
-      clientModal.classList.add("open");
-      renderClients();
-    });
+    document.getElementById("openClients").addEventListener("click", () => { clientModal.classList.add("open"); renderClients(); });
     document.getElementById("closeClients").addEventListener("click", () => clientModal.classList.remove("open"));
     document.getElementById("saveClient").addEventListener("click", saveCurrentClient);
     document.getElementById("clientSearch").addEventListener("input", renderClients);
-
-    function renderClients(){
-      const grid = document.getElementById("clientsGrid");
-      const empty = document.getElementById("clientsEmpty");
-      const q = (document.getElementById("clientSearch")?.value || "").trim().toLowerCase();
-      const list = loadClients().filter(c => {
-        if(!q) return true;
-        return (`${c.name} ${c.company} ${c.address} ${c.phone}`).toLowerCase().includes(q);
-      });
-      grid.innerHTML = "";
-      if(list.length === 0){ empty.style.display = "block"; return; }
-      empty.style.display = "none";
-      list.forEach(c => {
-        const letter = ((c.name || c.company || "?").trim()[0] || "?").toUpperCase();
-        const card = document.createElement("div");
-        card.className = "client-card";
-        card.innerHTML = `
-          <div style="display:flex; gap:12px; align-items:center;">
-            <div class="avatar">${letter}</div>
-            <div style="min-width:0;">
-              <div class="client-name">${escapeHtml(c.name || c.company || "Client")}</div>
-              <div style="color:#94a3b8; font-weight:900; font-size:0.82rem; margin-top:2px;">${escapeHtml(c.company || "")}</div>
-            </div>
-          </div>
-          <div class="client-line"><i class="fa-solid fa-location-dot"></i><span>${escapeHtml(c.address || "—")}</span></div>
-          <div class="client-line"><i class="fa-solid fa-phone"></i><span>${escapeHtml(((c.phoneCode||"") + " " + (c.phone||"")).trim() || "—")}</span></div>
-          <div class="card-actions">
-            <button class="choose-btn" type="button">CHOISIR</button>
-            <button class="trash-btn" type="button" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
-        card.querySelector(".choose-btn").addEventListener("click", () => {
-          fillFormWithClient(c);
-          clientModal.classList.remove("open");
-          toast("✅ Client sélectionné");
-        });
-        card.querySelector(".trash-btn").addEventListener("click", () => {
-          if(confirm("Supprimer ce client ?")) deleteClient(c.id);
-        });
-        grid.appendChild(card);
-      });
-    }
-
+    function renderClients(){ const grid = document.getElementById("clientsGrid"); const empty = document.getElementById("clientsEmpty"); const q = (document.getElementById("clientSearch")?.value || "").trim().toLowerCase(); const list = loadClients().filter(c => { if(!q) return true; return (`${c.name} ${c.company} ${c.address} ${c.phone}`).toLowerCase().includes(q); }); grid.innerHTML = ""; if(list.length === 0){ empty.style.display = "block"; return; } empty.style.display = "none"; list.forEach(c => { const letter = ((c.name || c.company || "?").trim()[0] || "?").toUpperCase(); const card = document.createElement("div"); card.className = "client-card"; card.innerHTML = `<div style="display:flex; gap:12px; align-items:center;"><div class="avatar">${letter}</div><div style="min-width:0;"><div class="client-name">${escapeHtml(c.name || c.company || "Client")}</div><div style="color:#94a3b8; font-weight:900; font-size:0.82rem; margin-top:2px;">${escapeHtml(c.company || "")}</div></div></div><div class="client-line"><i class="fa-solid fa-location-dot"></i><span>${escapeHtml(c.address || "—")}</span></div><div class="client-line"><i class="fa-solid fa-phone"></i><span>${escapeHtml(((c.phoneCode||"") + " " + (c.phone||"")).trim() || "—")}</span></div><div class="card-actions"><button class="choose-btn" type="button">CHOISIR</button><button class="trash-btn" type="button" title="Supprimer"><i class="fa-solid fa-trash"></i></button></div>`; card.querySelector(".choose-btn").addEventListener("click", () => { fillFormWithClient(c); clientModal.classList.remove("open"); toast("✅ Client sélectionné"); }); card.querySelector(".trash-btn").addEventListener("click", () => { if(confirm("Supprimer ?")) deleteClient(c.id); }); grid.appendChild(card); }); }
     function escapeHtml(str){ return String(str || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"); }
-
     let toastTimer = null;
-    function toast(msg){
-      let t = document.getElementById("toastBox");
-      if(!t){
-        t = document.createElement("div"); t.id = "toastBox";
-        t.style.cssText = `position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: rgba(17,24,39,0.92); color: #fff; padding: 12px 16px; border-radius: 14px; font-family: 'Lexend'; font-weight: 900; font-size: 0.9rem; box-shadow: 0 18px 50px rgba(0,0,0,0.35); z-index: 5000; opacity: 0; transition: opacity .18s ease, transform .18s ease;`;
-        document.body.appendChild(t);
-      }
-      t.textContent = msg; t.style.opacity = "1"; t.style.transform = "translateX(-50%) translateY(-2px)";
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translateX(-50%) translateY(6px)"; }, 1400);
-    }
+    function toast(msg){ let t = document.getElementById("toastBox"); if(!t){ t = document.createElement("div"); t.id = "toastBox"; t.style.cssText = `position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: rgba(17,24,39,0.92); color: #fff; padding: 12px 16px; border-radius: 14px; font-family: 'Lexend'; font-weight: 900; font-size: 0.9rem; box-shadow: 0 18px 50px rgba(0,0,0,0.35); z-index: 5000; opacity: 0; transition: opacity .18s ease, transform .18s ease;`; document.body.appendChild(t); } t.textContent = msg; t.style.opacity = "1"; t.style.transform = "translateX(-50%) translateY(-2px)"; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translateX(-50%) translateY(6px)"; }, 1400); }
   </script>
 </body>
 </html>
-
