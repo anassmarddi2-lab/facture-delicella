@@ -19,17 +19,21 @@
     :root { --primary:#d6001c; --gold:#cfb04a; --dark:#1e293b; --bg:#fff1f1; }
 
     *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+    html, body{ height:100%; -webkit-overflow-scrolling: touch; }
 
     body{
       font-family: 'Nunito', sans-serif;
       background: #555;
       padding: 20px;
       padding-left: 350px; /* desktop */
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
       display: flex;
       justify-content: center;
       -webkit-text-size-adjust: 100%;
     }
+
+    /* ✅ Safari iPhone: منع zoom فـ inputs */
+    input, select, textarea{ font-size: 16px; }
 
     /* =========================
        ✅ SIDEBAR (DESKTOP)
@@ -43,7 +47,7 @@
 
       display: flex;
       flex-direction: column;
-      gap: 36px;
+      gap: 24px;
       padding-bottom: 12px;
 
       opacity: 0;
@@ -52,7 +56,7 @@
     }
     @keyframes sideIn{ to{ opacity:1; transform: translateX(0);} }
 
-    .panel, .currency-wrap{ margin-bottom: 8px; }
+    .panel, .currency-wrap{ margin-bottom: 4px; }
 
     .panel{
       background: rgba(255,255,255,0.12);
@@ -76,10 +80,12 @@
       cursor: pointer;
       font-family: 'Lexend';
       white-space: nowrap;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+
       box-shadow: 0 12px 26px rgba(0,0,0,0.20);
       transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
       touch-action: manipulation;
@@ -101,13 +107,16 @@
       width: 100%;
       height: 46px;
       border-radius: 14px;
+
       background: rgba(255,255,255,0.92);
       border: 1px solid rgba(255,255,255,0.35);
       box-shadow: 0 12px 26px rgba(0,0,0,0.22);
+
       display:flex;
       align-items:center;
       justify-content: space-between;
       padding: 0 14px;
+
       cursor: pointer;
       user-select:none;
       transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
@@ -137,6 +146,7 @@
       box-shadow: 0 0 0 4px rgba(214,0,28,0.12);
       flex: 0 0 auto;
     }
+
     .fab-bottom{
       font-family:'Lexend';
       font-weight: 900;
@@ -149,12 +159,14 @@
       position: absolute;
       left: calc(100% + 12px);
       top: 0;
+
       width: 230px;
       background: rgba(255,255,255,0.96);
       border: 1px solid rgba(148,163,184,0.35);
       border-radius: 18px;
       box-shadow: 0 22px 60px rgba(0,0,0,0.30);
       backdrop-filter: blur(14px);
+
       padding: 12px;
       display: grid;
       grid-template-columns: 1fr 80px;
@@ -187,7 +199,6 @@
       border-radius: 14px;
       border: 1px solid rgba(0,0,0,0.12);
       padding: 0 12px;
-      font-size: 0.92rem;
       font-weight: 900;
       outline: none;
       background: rgba(255,255,255,0.98);
@@ -350,7 +361,7 @@
     .modal-title{ font-family: 'Lexend'; font-weight: 900; color: var(--primary); font-size: 1.55rem; }
     .modal-search{ display:flex; align-items:center; gap: 10px; background: rgba(255,255,255,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 999px; padding: 10px 14px; width: min(420px, 50vw); }
     .modal-search i{ color:#94a3b8; }
-    .modal-search input{ border:none; outline:none; background: transparent; width: 100%; font-weight: 700; font-size: 0.95rem; }
+    .modal-search input{ border:none; outline:none; background: transparent; width: 100%; font-weight: 700; }
     .modal-close{ border:none; background: transparent; font-size: 1.35rem; font-weight: 900; cursor:pointer; color:#0f172a; width: 42px; height: 42px; border-radius: 12px; }
     .modal-close:hover{ background: rgba(15,23,42,0.08); }
     .modal-body{ padding: 18px; height: calc(100% - 76px); overflow: auto; }
@@ -359,7 +370,7 @@
     .client-card:hover{ transform: translateY(-2px); transition: .15s; }
     .avatar{ width: 46px; height: 46px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-family: 'Lexend'; font-weight: 900; color: #fff; background: var(--primary); }
     .client-name{ font-family:'Lexend'; font-weight: 900; color:#0f172a; font-size: 1.05rem; }
-    .client-line{ display:flex; align-items:center; gap: 10px; color:#64748b; font-weight: 800; font-size: 0.92rem; }
+    .client-line{ display:flex; align-items:center; gap: 10px; color:#64748b; font-weight: 800; }
     .client-line i{ color:#94a3b8; width: 16px; text-align:center; }
     .card-actions{ margin-top: 6px; display:flex; align-items:center; gap: 10px; }
     .choose-btn{ flex: 1; height: 38px; border-radius: 12px; border:none; background:#111827; color:#fff; font-family:'Lexend'; font-weight: 900; cursor:pointer; touch-action: manipulation; }
@@ -367,7 +378,7 @@
     .empty-state{ padding: 30px; text-align:center; color:#64748b; font-weight: 900; background: rgba(255,255,255,0.7); border: 1px dashed rgba(148,163,184,0.5); border-radius: 18px; }
 
     /* =========================
-       ✅ MOBILE (FIX iPhone overlay)
+       ✅ MOBILE Safari FIX (no overlay)
        ========================= */
     @media (max-width: 980px){
       body{
@@ -377,8 +388,8 @@
         padding-left: 14px !important;
       }
 
-      /* ✅ sidebar مايبقاش fixed فوق الفاتورة */
       .sidebar{
+        position: -webkit-sticky;
         position: sticky;
         top: calc(12px + env(safe-area-inset-top));
         left: auto;
@@ -387,6 +398,7 @@
         max-width: 560px;
         margin: 0 auto 14px auto;
         z-index: 20;
+        will-change: transform;
       }
 
       .currency-menu{
@@ -395,13 +407,12 @@
         width: 100%;
       }
 
-      /* ✅ invoice responsive بلا scale */
+      /* ✅ invoice responsive on screen */
       .page-a4{
         width: calc(100vw - 28px);
         max-width: 210mm;
         min-height: auto;
         margin: 0 auto;
-        transform: none !important;
       }
 
       .header{ padding: 18px 18px 10px 18px; }
@@ -419,24 +430,27 @@
       .client-section{ padding-left: 0; padding-top: 14px; }
       .payment-box{ min-width: 100%; }
       .footer{ padding: 12px 18px; flex-direction: column; gap: 6px; }
-    }
-
-    @media (max-width: 420px){
-      .title{ font-size: 2.5rem; }
-      .logo-box img{ height: 130px; }
       .totals-box{ width: 100%; }
       .totals-section{ justify-content: stretch; }
     }
 
-    /* ✅ Print / PDF */
-    @media print{
-      body{ padding:0 !important; background:#fff !important; }
-      .sidebar, .no-print{ display:none !important; }
-      .page-a4{
-        width: 210mm !important;
-        min-height: 296mm !important;
-        max-width: none !important;
-      }
+    /* =========================
+       ✅ PDF MODE (force A4)
+       ========================= */
+    body.pdf-mode{
+      background: #fff !important;
+      padding: 0 !important;
+    }
+    body.pdf-mode .sidebar,
+    body.pdf-mode .no-print{
+      display: none !important;
+    }
+    body.pdf-mode .page-a4{
+      width: 210mm !important;
+      min-height: 296mm !important;
+      max-width: none !important;
+      margin: 0 !important;
+      box-shadow: none !important;
     }
   </style>
 </head>
@@ -657,6 +671,11 @@
         if(!isMobile()) return;
         if(!wrap.contains(e.target)) wrap.classList.remove("open");
       });
+
+      // ✅ Safari: مع scroll سدّ menu
+      window.addEventListener("scroll", () => {
+        if(isMobile()) wrap.classList.remove("open");
+      }, { passive:true });
     }
 
     function updatePreview(){
@@ -719,32 +738,55 @@
       document.getElementById('ttc').innerText = ttc.toFixed(2) + " " + sym;
     }
 
-    function downloadPDF() {
+    /* =========================
+       ✅ PDF A4 مگاد (حتى فالموبايل Safari)
+       ========================= */
+    async function downloadPDF() {
       const element = document.getElementById('invoice');
       const btn = document.querySelector('.btn-pdf-main');
       const oldHTML = btn.innerHTML;
-      btn.innerHTML = "⏳ Génération...";
 
-      const mobile = window.innerWidth < 600;
+      // سدّ أي menu / modal
+      document.getElementById("currencyWrap")?.classList.remove("open");
+      document.getElementById("clientsModalBackdrop")?.classList.remove("open");
+
+      btn.innerHTML = "⏳ Génération...";
+      btn.disabled = true;
+
+      // رجّع الصفحة لفوق باش html2canvas مايتلخبطش فـ Safari
+      const oldScroll = window.scrollY || 0;
+      window.scrollTo(0, 0);
+
+      // فعّل وضع PDF (كيولي A4 ثابت)
+      document.body.classList.add("pdf-mode");
+
+      // خليه ياخذ نفس layout ديال PDF قبل التصوير
+      await new Promise(r => setTimeout(r, 250));
+
       const opt = {
         margin: 0,
         filename: 'Facture_Delicella.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
-          scale: mobile ? 1.35 : 2,
+          scale: 2,              // ✅ جودة
           useCORS: true,
+          backgroundColor: "#ffffff",
           scrollY: 0,
           ignoreElements: (el) => el.classList?.contains('no-print')
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().from(element).set(opt).save().then(() => {
-        btn.innerHTML = oldHTML;
-      }).catch(err => {
+      try{
+        await html2pdf().from(element).set(opt).save();
+      }catch(err){
         alert("Erreur: " + err);
+      }finally{
+        document.body.classList.remove("pdf-mode");
         btn.innerHTML = oldHTML;
-      });
+        btn.disabled = false;
+        window.scrollTo(0, oldScroll);
+      }
     }
 
     /* =========================
