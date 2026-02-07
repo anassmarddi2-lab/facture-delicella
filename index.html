@@ -26,7 +26,7 @@
       justify-content:center;
       align-items:flex-start;
       min-height:100vh;
-      margin: 0; /* Reset margin */
+      margin: 0;
     }
 
     /* Sidebar */
@@ -64,10 +64,16 @@
     .btn-add{background:var(--gold);color:#1e293b}
     .btn-pdf{background:var(--primary);color:#fff}
 
-    /* Devise / TVA */
-    .currency-wrap{position:relative;width:100%;height:46px}
+    /* Devise / TVA - MODIFIED HERE */
+    .currency-wrap{position:relative;width:100%;height:46px;}
+    
     .currency-fab{
-      width:100%;height:46px;border-radius:14px;
+      /* 🔥 التعديل: نقصنا العرض ودرناه فالوسط */
+      width: 90%; 
+      max-width: 250px; /* الحد الأقصى للعرض باش ماتجيش عريضة */
+      margin: 0 auto; /* باش تجي فالوسط */
+      
+      height:46px;border-radius:14px;
       background:rgba(255,255,255,.92);
       border:1px solid rgba(255,255,255,.35);
       box-shadow:0 12px 26px rgba(0,0,0,.22);
@@ -77,6 +83,7 @@
       -webkit-tap-highlight-color:transparent;
     }
     .currency-fab:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(0,0,0,.26);filter:brightness(1.02)}
+    
     .fab-top{display:flex;align-items:center;gap:10px;font-family:'Lexend';font-weight:900;font-size:.72rem;letter-spacing:1px;color:#64748b;text-transform:uppercase;white-space:nowrap}
     .fab-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(214,0,28,.12);flex:0 0 auto}
     .fab-bottom{font-family:'Lexend';font-weight:900;font-size:.85rem;color:#0f172a;white-space:nowrap}
@@ -102,29 +109,26 @@
     }
     .currency-menu input{text-align:center}
 
-    /* 🔥 MODIFICATION 1: Invoice Wrapper Fix 🔥 */
+    /* Invoice Wrapper */
     #invoiceWrap{
       width:100%;
       display:flex;
       justify-content:center;
       overflow:visible;
-      /* Important pour que le scale marche bien */
       transform-origin: top center; 
       transition: height 0.3s ease;
     }
 
-    /* 🔥 MODIFICATION 2: A4 Fix 🔥 */
+    /* A4 Page */
     .page-a4{
       width:210mm;
       min-height:296mm;
-      /* Force la largeur minimale pour ne pas casser le design */
       min-width: 793px; 
       background:#fff;
       position:relative;
       display:flex;flex-direction:column;
       box-shadow:0 10px 30px rgba(0,0,0,.30);
       padding:0;overflow:hidden;z-index:1;margin-top:0;
-      /* Le scale se fera via JS */
       transform-origin: top center;
     }
 
@@ -241,13 +245,13 @@
     .trash-btn{width:42px;height:38px;border-radius:12px;border:none;cursor:pointer;background:rgba(239,68,68,.12);color:#ef4444;font-size:1.05rem}
     .empty-state{padding:30px;text-align:center;color:#64748b;font-weight:900;background:rgba(255,255,255,.7);border:1px dashed rgba(148,163,184,.5);border-radius:18px}
 
-    /* ✅ iPhone/Mobile: نفس PC ولكن مصغر (scale) */
+    /* ✅ iPhone/Mobile Media Query */
     @media (max-width:980px){
-      input,select,textarea{font-size:16px!important} /* منع zoom */
+      input,select,textarea{font-size:16px!important} 
       body {
         padding: 0 !important;
         display: block !important;
-        background: #333; /* خلفية داكنة باش تبان الفاتورة */
+        background: #333; 
       }
       .sidebar{
         position:relative!important;
@@ -268,7 +272,6 @@
       }
       .currency-menu{left:0!important;top:56px!important;width:100%!important}
       
-      /* الفاتورة كتبقى بعبارها الأصلي وحنا كنصغروها بـ JS */
       #invoice {
         margin: 0 auto;
         box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -450,31 +453,23 @@
     const currencySymbols = { MAD: "DH", EUR: "€", USD: "$" };
 
     /* =========================
-       🔥 NEW IPHONE FIX LOGIC 🔥
+       🔥 IPHONE/PC SCALING 🔥
        ========================= */
     function applyDesktopScale(){
       const invoice = document.getElementById("invoice");
       const wrap = document.getElementById("invoiceWrap");
       if(!invoice || !wrap) return;
 
-      // العرض الحقيقي للورقة
       const originalWidth = 793; 
-      // العرض المتوفر في الشاشة
       const screenWidth = window.innerWidth;
 
       if(screenWidth < 980){
-        // حساب نسبة التصغير
         const scale = (screenWidth - 20) / originalWidth; 
-        
-        // تطبيق التصغير
         invoice.style.transform = `scale(${scale})`;
-        
-        // تعديل الطول باش ما يبقاش فراغ كبير لتحت
         const newHeight = (invoice.offsetHeight * scale) + 50;
         wrap.style.height = newHeight + "px";
-        wrap.style.marginBottom = "80px"; // Espace extra pour le scroll
+        wrap.style.marginBottom = "80px"; 
       } else {
-        // PC Mode: Normal
         invoice.style.transform = "none";
         wrap.style.height = "auto";
         wrap.style.marginBottom = "0";
@@ -485,19 +480,13 @@
        Init
        ========================= */
     window.onload = () => {
-      // flatpickr
       flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", animate:true, disableMobile:true });
       document.getElementById('invoiceNum').value = Math.floor(10000 + Math.random() * 90000);
 
-      // lines
       addLine(); addLine();
       updatePreview();
       calc();
-
-      // clients
       renderClients();
-
-      // Trigger Scale
       applyDesktopScale();
     };
 
@@ -570,8 +559,6 @@
 
     function downloadPDF() {
       const element = document.getElementById('invoice');
-
-      // temporarily remove scale to export clean PDF
       const oldTransform = element.style.transform;
       element.style.transform = "none";
 
@@ -705,38 +692,29 @@
               </div>
             </div>
           </div>
-
           <div class="client-line"><i class="fa-solid fa-location-dot"></i><span>${escapeHtml(c.address || "—")}</span></div>
           <div class="client-line"><i class="fa-solid fa-phone"></i><span>${escapeHtml(((c.phoneCode||"") + " " + (c.phone||"")).trim() || "—")}</span></div>
-
           <div class="card-actions">
             <button class="choose-btn" type="button">CHOISIR</button>
             <button class="trash-btn" type="button" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
-
         card.querySelector(".choose-btn").addEventListener("click", () => {
           fillFormWithClient(c);
           modalBackdrop.classList.remove("open");
           toast("✅ Client sélectionné");
         });
-
         card.querySelector(".trash-btn").addEventListener("click", () => {
           if(confirm("Supprimer ce client ?")) deleteClient(c.id);
         });
-
         grid.appendChild(card);
       });
     }
 
     function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;").replaceAll("<","&lt;")
-        .replaceAll(">","&gt;").replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+      return String(str || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
 
-    /* Toast */
     let toastTimer = null;
     function toast(msg){
       let t = document.getElementById("toastBox");
