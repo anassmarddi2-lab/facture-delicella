@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- ✅ مهم لـ iPhone Safari -->
+  <!-- ✅ iPhone Safari -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Facture Delicella</title>
 
@@ -16,482 +16,261 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
-    :root { --primary:#d6001c; --gold:#cfb04a; --dark:#1e293b; --bg:#fff1f1; }
+    :root{--primary:#d6001c;--gold:#cfb04a;--dark:#1e293b;--bg:#fff1f1}
 
-    /* ✅ BODY (PC) */
     body{
-      font-family: 'Nunito', sans-serif;
-      background: #555;
-      padding: 20px;
-      padding-left: 350px; /* ✅ مكان للـ sidebar فـ PC */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      font-family:'Nunito',sans-serif;
+      background:#555;
+      padding:20px;
+      padding-left:350px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
     }
 
-    /* =========================
-       ✅ SIDEBAR (PC)
-       ========================= */
+    /* Sidebar */
     .sidebar{
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 300px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      padding-bottom: 12px;
-
-      opacity: 0;
-      transform: translateX(-10px);
-      animation: sideIn .55s cubic-bezier(.2,.9,.2,1) forwards;
+      position:fixed;top:20px;left:20px;width:300px;z-index:999;
+      display:flex;flex-direction:column;gap:18px;padding-bottom:12px;
+      opacity:0;transform:translateX(-10px);
+      animation:sideIn .55s cubic-bezier(.2,.9,.2,1) forwards;
     }
-    @keyframes sideIn{ to{ opacity:1; transform: translateX(0);} }
+    @keyframes sideIn{to{opacity:1;transform:translateX(0)}}
 
-    .panel,
-    .currency-wrap{ margin-bottom: 8px; }
-
+    .panel,.currency-wrap{margin-bottom:8px}
     .panel{
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.20);
-      border-radius: 18px;
-      padding: 14px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius:18px;padding:14px;
+      backdrop-filter:blur(12px);
+      box-shadow:0 10px 22px rgba(0,0,0,.22);
+      display:flex;flex-direction:column;gap:14px;
     }
 
     .btn{
-      height: 46px;
-      width: 100%;
-      padding: 0 16px;
-      border: none;
-      border-radius: 16px;
-      font-weight: 900;
-      cursor: pointer;
-      font-family: 'Lexend';
-      white-space: nowrap;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      box-shadow: 0 12px 26px rgba(0,0,0,0.20);
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-      -webkit-tap-highlight-color: transparent;
+      height:46px;width:100%;padding:0 16px;border:none;border-radius:16px;
+      font-weight:900;cursor:pointer;font-family:'Lexend';white-space:nowrap;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      box-shadow:0 12px 26px rgba(0,0,0,.20);
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+      -webkit-tap-highlight-color:transparent;
     }
-    .btn:hover{ transform: translateY(-1px); box-shadow: 0 16px 34px rgba(0,0,0,0.26); filter: brightness(1.03); }
-    .btn:active{ transform: translateY(0px); }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(0,0,0,.26);filter:brightness(1.03)}
+    .btn:active{transform:translateY(0)}
 
-    .btn-clients{ background:#111827; color:#fff; }
-    .btn-saveinfo{ background: var(--gold); color:#1e293b; }
-    .btn-add{ background: var(--gold); color:#1e293b; }
-    .btn-pdf{ background: var(--primary); color:#fff; }
+    .btn-clients{background:#111827;color:#fff}
+    .btn-saveinfo{background:var(--gold);color:#1e293b}
+    .btn-add{background:var(--gold);color:#1e293b}
+    .btn-pdf{background:var(--primary);color:#fff}
 
-    /* =========================
-       ✅ Devise & TVA
-       ========================= */
-    .currency-wrap{ position: relative; width: 100%; height: 46px; }
-
+    /* Devise / TVA */
+    .currency-wrap{position:relative;width:100%;height:46px}
     .currency-fab{
-      width: 100%;
-      height: 46px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(255,255,255,0.35);
-      box-shadow: 0 12px 26px rgba(0,0,0,0.22);
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      padding: 0 14px;
-      cursor: pointer;
-      user-select:none;
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-      -webkit-tap-highlight-color: transparent;
+      width:100%;height:46px;border-radius:14px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.35);
+      box-shadow:0 12px 26px rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 14px;cursor:pointer;user-select:none;
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+      -webkit-tap-highlight-color:transparent;
     }
-    .currency-fab:hover{ transform: translateY(-1px); box-shadow: 0 16px 34px rgba(0,0,0,0.26); filter: brightness(1.02); }
-
-    .fab-top{
-      display:flex; align-items:center; gap: 10px;
-      font-family: 'Lexend'; font-weight: 900;
-      font-size: 0.72rem; letter-spacing: 1px;
-      color:#64748b; text-transform: uppercase; white-space: nowrap;
-    }
-    .fab-dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--primary);
-      box-shadow: 0 0 0 4px rgba(214,0,28,0.12);
-      flex: 0 0 auto;
-    }
-    .fab-bottom{ font-family:'Lexend'; font-weight: 900; font-size: 0.85rem; color:#0f172a; white-space: nowrap; }
+    .currency-fab:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(0,0,0,.26);filter:brightness(1.02)}
+    .fab-top{display:flex;align-items:center;gap:10px;font-family:'Lexend';font-weight:900;font-size:.72rem;letter-spacing:1px;color:#64748b;text-transform:uppercase;white-space:nowrap}
+    .fab-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(214,0,28,.12);flex:0 0 auto}
+    .fab-bottom{font-family:'Lexend';font-weight:900;font-size:.85rem;color:#0f172a;white-space:nowrap}
 
     .currency-menu{
-      position: absolute;
-      left: calc(100% + 12px);
-      top: 0;
-      width: 230px;
-      background: rgba(255,255,255,0.96);
-      border: 1px solid rgba(148,163,184,0.35);
-      border-radius: 18px;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.30);
-      backdrop-filter: blur(14px);
-      padding: 12px;
-
-      display: grid;
-      grid-template-columns: 1fr 80px;
-      gap: 10px;
-      align-items: center;
-
-      opacity: 0;
-      transform: translateX(-6px);
-      pointer-events: none;
-      transition: opacity .18s ease, transform .18s ease;
-      z-index: 1200;
+      position:absolute;left:calc(100% + 12px);top:0;width:230px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(148,163,184,.35);
+      border-radius:18px;
+      box-shadow:0 22px 60px rgba(0,0,0,.30);
+      backdrop-filter:blur(14px);
+      padding:12px;
+      display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;
+      opacity:0;transform:translateX(-6px);pointer-events:none;
+      transition:opacity .18s ease,transform .18s ease;
+      z-index:1200;
     }
-    .currency-wrap:hover .currency-menu{
-      opacity: 1;
-      transform: translateX(0);
-      pointer-events: auto;
+    .currency-wrap:hover .currency-menu{opacity:1;transform:translateX(0);pointer-events:auto}
+    .currency-menu select,.currency-menu input{
+      height:40px;border-radius:14px;border:1px solid rgba(0,0,0,.12);
+      padding:0 12px;font-size:.92rem;font-weight:900;outline:none;
+      background:rgba(255,255,255,.98);
     }
+    .currency-menu input{text-align:center}
 
-    .currency-menu select, .currency-menu input{
-      height: 40px;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,0.12);
-      padding: 0 12px;
-      font-size: 0.92rem;
-      font-weight: 900;
-      outline: none;
-      background: rgba(255,255,255,0.98);
-    }
-    .currency-menu input{ text-align:center; }
+    /* Invoice wrapper (important for iPhone scale) */
+    #invoiceWrap{width:100%;display:flex;justify-content:center;overflow:visible}
 
-    /* =========================
-       ✅ PAGE A4 (PC)
-       ========================= */
+    /* A4 page */
     .page-a4{
-      width: 210mm;
-      min-height: 296mm;
-      max-width: calc(100vw - 40px);
-      background: white;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      padding: 0;
-      overflow: hidden;
-      z-index: 1;
-      margin-top: 0;
+      width:210mm;min-height:296mm;background:#fff;position:relative;
+      display:flex;flex-direction:column;
+      box-shadow:0 10px 30px rgba(0,0,0,.30);
+      padding:0;overflow:hidden;z-index:1;margin-top:0;
     }
 
     .watermark-container{
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; justify-content: center; align-items: center;
-      z-index: 0; opacity: 0.08; pointer-events: none;
+      position:absolute;inset:0;
+      display:flex;justify-content:center;align-items:center;
+      z-index:0;opacity:.08;pointer-events:none;
     }
-    .watermark-container img{ width: 75%; height: auto; }
-
-    .header, .body, .footer{ position: relative; z-index: 2; }
+    .watermark-container img{width:75%;height:auto}
+    .header,.body,.footer{position:relative;z-index:2}
 
     .header{
-      background: rgba(255, 241, 241, 0.85);
-      padding: 21px 40px 10px 40px;
-      border-bottom: 4px solid var(--gold);
-      display: flex; justify-content: space-between; align-items: flex-start;
-      gap: 12px;
+      background:rgba(255,241,241,.85);
+      padding:21px 40px 10px 40px;
+      border-bottom:4px solid var(--gold);
+      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
     }
-
-    .header-left{ display: flex; flex-direction: column; }
+    .header-left{display:flex;flex-direction:column}
     .title{
-      font-family: 'Lexend';
-      font-size: 4.2rem;
-      color: var(--primary);
-      margin: 0;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-left: 20px;
+      font-family:'Lexend';font-size:4.2rem;color:var(--primary);
+      margin:0;line-height:1;text-transform:uppercase;letter-spacing:2px;margin-left:20px;
     }
-
-    .meta{ margin-top: 40px; display: flex; flex-direction: column; gap: 10px; }
-    .meta-row{ display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--dark); }
-    .meta-row span{ color: var(--primary); font-family: 'Lexend'; font-size: 0.9rem; }
+    .meta{margin-top:40px;display:flex;flex-direction:column;gap:10px}
+    .meta-row{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--dark)}
+    .meta-row span{color:var(--primary);font-family:'Lexend';font-size:.9rem}
     .meta-row input{
-      background: transparent;
-      border: none;
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--dark);
-      width: 140px;
-      cursor: pointer;
-      outline: none;
+      background:transparent;border:none;font-weight:800;font-size:1.1rem;color:var(--dark);
+      width:140px;cursor:pointer;outline:none;
     }
+    .logo-box img{height:250px;width:auto;margin-top:-50px}
 
-    .logo-box img{ height: 250px; width: auto; margin-top: -50px; }
+    .body{padding:25px 40px;flex:1;display:flex;flex-direction:column}
 
-    .body{ padding: 25px 40px 25px 40px; flex: 1; display: flex; flex-direction: column; }
-
-    .grid{ display: grid; grid-template-columns: 0.6fr 1.4fr; gap: 0; margin-bottom: 35px; }
-    .grid > div:first-child{ border-right: 3px solid var(--gold); padding-right: 25px; }
-    .client-section{ padding-left: 25px; }
+    .grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:0;margin-bottom:35px}
+    .grid>div:first-child{border-right:3px solid var(--gold);padding-right:25px}
+    .client-section{padding-left:25px}
 
     .box-title{
-      color: #000;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 800;
-      display: inline-block;
-      padding-bottom: 6px;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      line-height: 1;
-      border-bottom: none !important;
-      box-shadow: inset 0 -3px 0 var(--primary);
+      color:#000;font-size:.85rem;font-weight:800;display:inline-block;
+      padding-bottom:6px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1px;line-height:1;
+      box-shadow:inset 0 -3px 0 var(--primary);
     }
+    .company-info{font-size:.95rem;line-height:1.5;color:var(--dark)}
 
-    .company-info{ font-size: 0.95rem; line-height: 1.5; color: var(--dark); }
-
-    .input-group{ display: flex; align-items: flex-start; margin-bottom: 8px; border-bottom: 1px dashed #ccc; padding-bottom: 2px; }
+    .input-group{display:flex;align-items:flex-start;margin-bottom:8px;border-bottom:1px dashed #ccc;padding-bottom:2px}
     .input-group label{
-      font-weight: 700; color: var(--dark); font-size: 0.85rem;
-      min-width: 145px; font-family: 'Lexend'; padding-top: 5px; text-transform: uppercase;
+      font-weight:700;color:var(--dark);font-size:.85rem;min-width:145px;
+      font-family:'Lexend';padding-top:5px;text-transform:uppercase;
     }
     .input-group input{
-      flex: 1; border: none; background: transparent;
-      font-weight: 600; font-size: 0.95rem; color: #000;
-      padding: 5px 0 5px 10px; outline:none;
+      flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;
+      padding:5px 0 5px 10px;outline:none;
     }
 
-    .flow-box{ border-bottom: 1px dashed #ccc; margin-bottom: 8px; padding-bottom: 5px; cursor: text; display: block; }
-    .flow-box label{ font-weight: 700; color: var(--dark); font-size: 0.85rem; font-family: 'Lexend'; text-transform: uppercase; display: inline; margin-right: 5px; }
-    .flow-content{ display: inline; font-weight: 600; font-size: 0.95rem; color: #000; outline: none; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; }
-    .flow-content:empty:before{ content: '...'; color: #aaa; font-weight: 400; }
+    .flow-box{border-bottom:1px dashed #ccc;margin-bottom:8px;padding-bottom:5px;cursor:text;display:block}
+    .flow-box label{font-weight:700;color:var(--dark);font-size:.85rem;font-family:'Lexend';text-transform:uppercase;display:inline;margin-right:5px}
+    .flow-content{display:inline;font-weight:600;font-size:.95rem;color:#000;outline:none;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+    .flow-content:empty:before{content:'...';color:#aaa;font-weight:400}
 
-    .phone-wrapper{ display: flex; align-items: center; flex: 1; }
-    .phone-select{ border: none; background: transparent; font-weight: 800; font-size: 0.9rem; color: var(--primary); cursor: pointer; margin-right: 8px; outline: none; }
-    .phone-input{ flex:1; border:none; background:transparent; font-weight:600; font-size:0.95rem; color:#000; outline:none; padding: 5px 0 5px 10px; }
+    .phone-wrapper{display:flex;align-items:center;flex:1}
+    .phone-select{border:none;background:transparent;font-weight:800;font-size:.9rem;color:var(--primary);cursor:pointer;margin-right:8px;outline:none}
+    .phone-input{flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;outline:none;padding:5px 0 5px 10px}
 
-    /* ✅ Table */
-    table{ width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table{width:100%;border-collapse:collapse;margin-top:10px}
     th{
-      text-align:left; padding:8px 5px;
-      color:var(--primary); font-family:'Lexend'; font-size:0.85rem;
-      border-bottom: none !important; box-shadow: none !important;
+      text-align:left;padding:8px 5px;color:var(--primary);
+      font-family:'Lexend';font-size:.85rem;border-bottom:none!important;
     }
-    thead{ position: relative; }
-    thead::after{
-      content:""; position:absolute; left:0; right:0; bottom:0;
-      height:2px; background: var(--primary);
-    }
-    td{ padding: 8px 5px; border-bottom: 1px solid #f0f0f0; }
-    td input{ width: 100%; border: none; font-weight: 700; font-size: 0.95rem; background: transparent; outline:none; }
+    thead{position:relative}
+    thead:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--primary)}
+    td{padding:8px 5px;border-bottom:1px solid #f0f0f0}
+    td input{width:100%;border:none;font-weight:700;font-size:.95rem;background:transparent;outline:none}
 
     .delete-btn{
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: var(--primary);
-      font-weight: 900;
-      font-size: 1.1rem;
-      padding: 2px 6px;
-      border-radius: 6px;
-      line-height: 1;
+      background:transparent;border:none;cursor:pointer;color:var(--primary);
+      font-weight:900;font-size:1.1rem;padding:2px 6px;border-radius:6px;line-height:1;
     }
-    .delete-btn:hover{ background: rgba(214,0,28,0.10); }
+    .delete-btn:hover{background:rgba(214,0,28,.10)}
 
-    .totals-section{ display: flex; justify-content: flex-end; margin-top: 30px; }
-    .totals-box{ width: 240px; background: transparent; padding: 10px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
-    .row{ display: flex; justify-content: space-between; padding: 6px 0; font-weight: 700; color: #64748b; font-size: 0.9rem; }
-    .row.final{ color: var(--primary); font-size: 1.1rem; border-top: 2px solid var(--primary); margin-top: 5px; padding-top: 5px; font-family: 'Lexend'; }
+    .totals-section{display:flex;justify-content:flex-end;margin-top:30px}
+    .totals-box{width:240px;background:transparent;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,.05)}
+    .row{display:flex;justify-content:space-between;padding:6px 0;font-weight:700;color:#64748b;font-size:.9rem}
+    .row.final{color:var(--primary);font-size:1.1rem;border-top:2px solid var(--primary);margin-top:5px;padding-top:5px;font-family:'Lexend'}
 
-    .payment-section{ margin-top: 40px; display: flex; justify-content: flex-start; }
-    .payment-box{ font-size: 0.9rem; color: var(--dark); background: rgba(255, 241, 241, 0.4); padding: 15px; border-radius: 8px; border-left: 3px solid var(--gold); min-width: 300px; }
-    .payment-title{ font-family: 'Lexend'; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; font-size: 0.95rem; display: inline-block; border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
-    .payment-details{ line-height: 1.6; margin-top: 5px; }
-    .bank-info{ font-weight: 800; color: #000; font-size: 1rem; }
+    .payment-section{margin-top:40px;display:flex;justify-content:flex-start}
+    .payment-box{font-size:.9rem;color:var(--dark);background:rgba(255,241,241,.4);padding:15px;border-radius:8px;border-left:3px solid var(--gold);min-width:300px}
+    .payment-title{font-family:'Lexend';font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:5px;font-size:.95rem;display:inline-block;border-bottom:2px solid var(--gold);padding-bottom:2px}
+    .payment-details{line-height:1.6;margin-top:5px}
+    .bank-info{font-weight:800;color:#000;font-size:1rem}
 
-    .footer{ padding: 15px 40px; border-top: 2px solid var(--gold); font-size: 0.75rem; color: #94a3b8; display: flex; justify-content: space-between; font-weight: 700; margin-top: auto; gap: 10px; }
+    .footer{padding:15px 40px;border-top:2px solid var(--gold);font-size:.75rem;color:#94a3b8;display:flex;justify-content:space-between;font-weight:700;margin-top:auto;gap:10px}
+    .no-print{display:block}
 
-    .no-print{ display:block; }
+    /* Modal clients */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;align-items:center;justify-content:center;padding:18px}
+    .modal-backdrop.open{display:flex}
+    .modal{width:min(980px,96vw);height:min(620px,86vh);background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.30);border-radius:22px;box-shadow:0 25px 80px rgba(0,0,0,.35);backdrop-filter:blur(14px);overflow:hidden}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:rgba(248,250,252,.85);border-bottom:1px solid rgba(15,23,42,.08);gap:10px}
+    .modal-title{font-family:'Lexend';font-weight:900;color:var(--primary);font-size:1.55rem}
+    .modal-search{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.9);border:1px solid rgba(148,163,184,.35);border-radius:999px;padding:10px 14px;width:min(420px,50vw)}
+    .modal-search i{color:#94a3b8}
+    .modal-search input{border:none;outline:none;background:transparent;width:100%;font-weight:700;font-size:.95rem}
+    .modal-close{border:none;background:transparent;font-size:1.35rem;font-weight:900;cursor:pointer;color:#0f172a;width:42px;height:42px;border-radius:12px}
+    .modal-close:hover{background:rgba(15,23,42,.08)}
+    .modal-body{padding:18px;height:calc(100% - 76px);overflow:auto}
+    .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .client-card{background:rgba(255,255,255,.92);border:1px solid rgba(148,163,184,.30);border-radius:18px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.10);display:flex;flex-direction:column;gap:10px;min-height:170px}
+    .avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lexend';font-weight:900;color:#fff;background:var(--primary)}
+    .client-name{font-family:'Lexend';font-weight:900;color:#0f172a;font-size:1.05rem}
+    .client-line{display:flex;align-items:center;gap:10px;color:#64748b;font-weight:800;font-size:.92rem}
+    .client-line i{color:#94a3b8;width:16px;text-align:center}
+    .card-actions{margin-top:6px;display:flex;align-items:center;gap:10px}
+    .choose-btn{flex:1;height:38px;border-radius:12px;border:none;background:#111827;color:#fff;font-family:'Lexend';font-weight:900;cursor:pointer}
+    .trash-btn{width:42px;height:38px;border-radius:12px;border:none;cursor:pointer;background:rgba(239,68,68,.12);color:#ef4444;font-size:1.05rem}
+    .empty-state{padding:30px;text-align:center;color:#64748b;font-weight:900;background:rgba(255,255,255,.7);border:1px dashed rgba(148,163,184,.5);border-radius:18px}
 
-    /* ✅ Wrapper للجدول (باش ما يتقطعش فـ iPhone) */
-    .table-wrap{ width: 100%; overflow: visible; }
-
-    /* ✅ Modal clients */
-    .modal-backdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 18px; }
-    .modal-backdrop.open{ display:flex; }
-    .modal{ width: min(980px, 96vw); height: min(620px, 86vh); background: rgba(255,255,255,0.94); border: 1px solid rgba(255,255,255,0.30); border-radius: 22px; box-shadow: 0 25px 80px rgba(0,0,0,0.35); backdrop-filter: blur(14px); overflow: hidden; }
-    .modal-header{ display:flex; align-items:center; justify-content: space-between; padding: 18px 22px; background: rgba(248,250,252,0.85); border-bottom: 1px solid rgba(15,23,42,0.08); gap: 10px; }
-    .modal-title{ font-family: 'Lexend'; font-weight: 900; color: var(--primary); font-size: 1.55rem; }
-    .modal-search{ display:flex; align-items:center; gap: 10px; background: rgba(255,255,255,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 999px; padding: 10px 14px; width: min(420px, 50vw); }
-    .modal-search i{ color:#94a3b8; }
-    .modal-search input{ border:none; outline:none; background: transparent; width: 100%; font-weight: 700; font-size: 0.95rem; }
-    .modal-close{ border:none; background: transparent; font-size: 1.35rem; font-weight: 900; cursor:pointer; color:#0f172a; width: 42px; height: 42px; border-radius: 12px; }
-    .modal-close:hover{ background: rgba(15,23,42,0.08); }
-    .modal-body{ padding: 18px; height: calc(100% - 76px); overflow: auto; }
-    .clients-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .client-card{ background: rgba(255,255,255,0.92); border: 1px solid rgba(148,163,184,0.30); border-radius: 18px; padding: 16px; box-shadow: 0 14px 30px rgba(0,0,0,0.10); display:flex; flex-direction: column; gap: 10px; min-height: 170px; }
-    .client-card:hover{ transform: translateY(-2px); transition: .15s; }
-    .avatar{ width: 46px; height: 46px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-family: 'Lexend'; font-weight: 900; color: #fff; background: var(--primary); }
-    .client-name{ font-family:'Lexend'; font-weight: 900; color:#0f172a; font-size: 1.05rem; }
-    .client-line{ display:flex; align-items:center; gap: 10px; color:#64748b; font-weight: 800; font-size: 0.92rem; }
-    .client-line i{ color:#94a3b8; width: 16px; text-align:center; }
-    .card-actions{ margin-top: 6px; display:flex; align-items:center; gap: 10px; }
-    .choose-btn{ flex: 1; height: 38px; border-radius: 12px; border:none; background:#111827; color:#fff; font-family:'Lexend'; font-weight: 900; cursor:pointer; }
-    .trash-btn{ width: 42px; height: 38px; border-radius: 12px; border:none; cursor:pointer; background: rgba(239,68,68,0.12); color: #ef4444; font-size: 1.05rem; }
-    .empty-state{ padding: 30px; text-align:center; color:#64748b; font-weight: 900; background: rgba(255,255,255,0.7); border: 1px dashed rgba(148,163,184,0.5); border-radius: 18px; }
-
-    /* =========================================================
-       ✅ iPhone / Mobile: خليه يبان كامل + ساهل فالكتابة
-       ========================================================= */
-    @media (max-width: 980px){
-
-      /* ✅ sidebar فوق، مايبقاش ثابت */
-      body{
-        padding: 12px;
-        padding-left: 12px;
-        padding-top: 12px;
-        display: block;
+    /* ✅ iPhone/Mobile: نفس PC ولكن مصغر (scale) */
+    @media (max-width:980px){
+      input,select,textarea{font-size:16px!important} /* منع zoom */
+      body.force-desktop{
+        padding:12px!important;
+        padding-left:12px!important;
+        display:block!important;
       }
-      .sidebar{
-        position: relative;
-        top: 0; left: 0;
-        width: 100%;
-        transform: none;
-        z-index: 5;
-        gap: 12px;
-        margin-bottom: 14px;
-        animation: none;
-        opacity: 1;
+      body.force-desktop .sidebar{
+        position:relative!important;
+        top:0!important;left:0!important;
+        width:100%!important;
+        transform:none!important;
+        margin-bottom:14px!important;
+        opacity:1!important;
+        animation:none!important;
       }
-
-      /* ✅ ترتيب الأزرار فالموبايل */
-      .panel{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+      body.force-desktop #invoice{
+        transform-origin:top center!important;
+        will-change:transform;
       }
-      .panel:last-child{ grid-template-columns: 1fr; }
-
-      .btn{
-        height: 44px;
-        border-radius: 14px;
-        font-size: 0.95rem;
-      }
-
-      /* ✅ menu ديال TVA/Devise تحت */
-      .currency-menu{
-        left: 0 !important;
-        top: 56px !important;
-        width: 100% !important;
-      }
-
-      /* ✅ الفاتورة تدخل كاملة فالعرض */
-      .page-a4{
-        width: 100% !important;
-        min-height: auto !important;
-        max-width: 100% !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-      }
-
-      /* ✅ padding صغار باش توسع */
-      .header{ padding: 16px 16px 10px 16px !important; }
-      .body{ padding: 16px !important; }
-      .footer{
-        padding: 12px 16px !important;
-        flex-direction: column !important;
-        gap: 6px !important;
-      }
-
-      /* ✅ عنوان ولوجو صغار */
-      .title{
-        font-size: 2.6rem !important;
-        margin-left: 0 !important;
-        letter-spacing: 1px !important;
-      }
-      .logo-box img{
-        height: 120px !important;
-        margin-top: -10px !important;
-      }
-
-      .meta{ margin-top: 14px !important; gap: 8px !important; }
-      .meta-row input{ width: 170px !important; }
-
-      /* ✅ أهم نقطة: Émetteur / Destinataire تحت بعضهم */
-      .grid{
-        grid-template-columns: 1fr !important;
-        gap: 18px !important;
-      }
-      .grid > div:first-child{
-        border-right: none !important;
-        padding-right: 0 !important;
-        border-bottom: 3px solid var(--gold) !important;
-        padding-bottom: 14px !important;
-      }
-      .client-section{ padding-left: 0 !important; }
-
-      /* ✅ labels أصغر شوية */
-      .input-group label{
-        min-width: 120px !important;
-        font-size: 0.78rem !important;
-      }
-
-      /* ✅ إذا الجدول تزاحم: نخليه scroll أفقي بدون ما يقطع */
-      .table-wrap{
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-      }
-      table{
-        min-width: 520px; /* ✅ باش يبقى منظم وscroll فالموبايل */
-      }
-      th{ font-size: 0.72rem !important; }
-      td input{ font-size: 0.9rem !important; }
-
-      /* ✅ totals & payment يدخلوا كاملين */
-      .totals-section{ justify-content: center !important; }
-      .totals-box{ width: 100% !important; }
-      .payment-box{ min-width: 0 !important; width: 100% !important; }
-
-      /* ✅ منع zoom ديال Safari ف inputs */
-      input, select, textarea{ font-size: 16px !important; }
+      /* فالموبايل خلي menu تحت */
+      .currency-menu{left:0!important;top:56px!important;width:100%!important}
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ SIDEBAR -->
+  <!-- Sidebar -->
   <div class="sidebar no-print">
     <div class="panel">
       <button class="btn btn-clients" id="openClients">
-        <i class="fa-solid fa-users"></i>
-        Clients Enregistrés
+        <i class="fa-solid fa-users"></i> Clients Enregistrés
       </button>
-
       <button class="btn btn-saveinfo" id="saveClient">
-        <i class="fa-solid fa-floppy-disk"></i>
-        Sauvegarder Info
+        <i class="fa-solid fa-floppy-disk"></i> Sauvegarder Info
       </button>
     </div>
 
     <div class="currency-wrap">
       <div class="currency-fab" title="Devise & TVA">
-        <div class="fab-top">
-          <span class="fab-dot"></span>
-          <span>TVA / DEVISE</span>
-        </div>
-        <div class="fab-bottom">
-          <span id="curPreview">MAD</span> • <span id="tvaPreview">20%</span>
-        </div>
+        <div class="fab-top"><span class="fab-dot"></span><span>TVA / DEVISE</span></div>
+        <div class="fab-bottom"><span id="curPreview">MAD</span> • <span id="tvaPreview">20%</span></div>
       </div>
-
       <div class="currency-menu">
         <select id="currency" onchange="calc(); updatePreview()">
           <option value="MAD" selected>MAD</option>
@@ -503,19 +282,17 @@
     </div>
 
     <div class="panel">
-      <button class="btn btn-add" onclick="addLine()">
-        <i class="fa-solid fa-plus"></i>
-        Ajouter Ligne
+      <!-- ✅ زر Mode PC كيتزاد أوتوماتيكياً من JS -->
+      <button class="btn btn-add" type="button" onclick="addLine()">
+        <i class="fa-solid fa-plus"></i> Ajouter Ligne
       </button>
-
-      <button class="btn btn-pdf" onclick="downloadPDF()">
-        <i class="fa-solid fa-file-pdf"></i>
-        Télécharger PDF
+      <button class="btn btn-pdf" type="button" onclick="downloadPDF()">
+        <i class="fa-solid fa-file-pdf"></i> Télécharger PDF
       </button>
     </div>
   </div>
 
-  <!-- ✅ MODAL CLIENTS -->
+  <!-- Modal Clients -->
   <div class="modal-backdrop" id="clientsModalBackdrop">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="clientsTitle">
       <div class="modal-header">
@@ -533,77 +310,76 @@
     </div>
   </div>
 
-  <!-- ✅ INVOICE -->
-  <div class="page-a4" id="invoice">
-    <div class="watermark-container">
-      <img src="data:image/png;base64,....(CODE-WATERMARK-HNA)...." alt="Watermark">
-    </div>
-
-    <div class="header">
-      <div class="header-left">
-        <h1 class="title">FACTURE</h1>
-        <div class="meta">
-          <div class="meta-row"><span>DATE:</span> <input type="text" id="date" placeholder="Sélectionner..."></div>
-          <div class="meta-row"><span>N° FACTURE:</span> <input type="text" id="invoiceNum"></div>
-        </div>
+  <!-- ✅ Wrap important for iPhone scaling -->
+  <div id="invoiceWrap">
+    <div class="page-a4" id="invoice">
+      <div class="watermark-container">
+        <img src="data:image/png;base64,....(CODE-WATERMARK-HNA)...." alt="Watermark">
       </div>
-      <div class="logo-box">
-        <img src="data:image/png;base64,....(CODE-LOGO-HNA)...." alt="Logo">
-      </div>
-    </div>
 
-    <div class="body">
-      <div class="grid">
-        <div>
-          <span class="box-title">ÉMETTEUR</span>
-          <div class="company-info">
-            <strong style="color:var(--primary); font-family:'Lexend'; font-size:1.1rem;">DELICELLA SARL AU</strong><br>
-            4, Rue Oued Ziz, 3ème Étage<br>Appt. 7, Agdal<br>
-            +212 642-395388
+      <div class="header">
+        <div class="header-left">
+          <h1 class="title">FACTURE</h1>
+          <div class="meta">
+            <div class="meta-row"><span>DATE:</span> <input type="text" id="date" placeholder="Sélectionner..."></div>
+            <div class="meta-row"><span>N° FACTURE:</span> <input type="text" id="invoiceNum"></div>
           </div>
         </div>
+        <div class="logo-box">
+          <img src="data:image/png;base64,....(CODE-LOGO-HNA)...." alt="Logo">
+        </div>
+      </div>
 
-        <div class="client-section">
-          <span class="box-title">DESTINATAIRE</span>
-
-          <div class="input-group">
-            <label>Nom du client :</label>
-            <input type="text" id="c_name" placeholder="...">
+      <div class="body">
+        <div class="grid">
+          <div>
+            <span class="box-title">ÉMETTEUR</span>
+            <div class="company-info">
+              <strong style="color:var(--primary); font-family:'Lexend'; font-size:1.1rem;">DELICELLA SARL AU</strong><br>
+              4, Rue Oued Ziz, 3ème Étage<br>Appt. 7, Agdal<br>
+              +212 642-395388
+            </div>
           </div>
 
-          <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
-            <label>Société Nom :</label>
-            <span class="flow-content" id="c_company" contenteditable="true"></span>
-          </div>
+          <div class="client-section">
+            <span class="box-title">DESTINATAIRE</span>
 
-          <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
-            <label>ICE :</label>
-            <span class="flow-content" id="c_ice" contenteditable="true"></span>
-          </div>
+            <div class="input-group">
+              <label>Nom du client :</label>
+              <input type="text" id="c_name" placeholder="...">
+            </div>
 
-          <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
-            <label>Adresse :</label>
-            <span class="flow-content" id="c_address" contenteditable="true"></span>
-          </div>
+            <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
+              <label>Société Nom :</label>
+              <span class="flow-content" id="c_company" contenteditable="true"></span>
+            </div>
 
-          <div class="input-group">
-            <label>N° Téléphone :</label>
-            <div class="phone-wrapper">
-              <select class="phone-select" id="c_phone_code">
-                <option value="+212">🇲🇦 +212</option>
-                <option value="+33">🇫🇷 +33</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+34">🇪🇸 +34</option>
-                <option value="+971">🇦🇪 +971</option>
-              </select>
-              <input class="phone-input" type="text" id="c_phone" placeholder="6 00 00 00 00">
+            <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
+              <label>ICE :</label>
+              <span class="flow-content" id="c_ice" contenteditable="true"></span>
+            </div>
+
+            <div class="flow-box" onclick="this.querySelector('.flow-content').focus()">
+              <label>Adresse :</label>
+              <span class="flow-content" id="c_address" contenteditable="true"></span>
+            </div>
+
+            <div class="input-group">
+              <label>N° Téléphone :</label>
+              <div class="phone-wrapper">
+                <select class="phone-select" id="c_phone_code">
+                  <option value="+212">🇲🇦 +212</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+971">🇦🇪 +971</option>
+                </select>
+                <input class="phone-input" type="text" id="c_phone" placeholder="6 00 00 00 00">
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- ✅ TABLE WRAP باش ما يتقطعش فـ iPhone -->
-      <div class="table-wrap">
         <table>
           <thead>
             <tr>
@@ -616,32 +392,32 @@
           </thead>
           <tbody id="lines"></tbody>
         </table>
-      </div>
 
-      <div class="totals-section">
-        <div class="totals-box">
-          <div class="row"><span>TOTAL HT</span> <span id="tht">0.00</span></div>
-          <div class="row"><span id="tvaLabel">TVA (20%)</span> <span id="tva">0.00</span></div>
-          <div class="row final"><span>TOTAL TTC</span> <span id="ttc">0.00</span></div>
-        </div>
-      </div>
-
-      <div class="payment-section">
-        <div class="payment-box">
-          <div class="payment-title">RÈGLEMENT :</div>
-          <div style="margin-bottom:5px; font-size:0.8rem; font-weight:700;">Par virement bancaire :</div>
-          <div class="payment-details">
-            <div style="margin-bottom:4px;">Banque : <span class="bank-info" contenteditable="true">BMCE BANK</span></div>
-            <div>RIB : <span class="bank-info" contenteditable="true">MA64 0118 1500 0011 2100 0094 4504</span></div>
+        <div class="totals-section">
+          <div class="totals-box">
+            <div class="row"><span>TOTAL HT</span> <span id="tht">0.00</span></div>
+            <div class="row"><span id="tvaLabel">TVA (20%)</span> <span id="tva">0.00</span></div>
+            <div class="row final"><span>TOTAL TTC</span> <span id="ttc">0.00</span></div>
           </div>
         </div>
+
+        <div class="payment-section">
+          <div class="payment-box">
+            <div class="payment-title">RÈGLEMENT :</div>
+            <div style="margin-bottom:5px; font-size:0.8rem; font-weight:700;">Par virement bancaire :</div>
+            <div class="payment-details">
+              <div style="margin-bottom:4px;">Banque : <span class="bank-info" contenteditable="true">BMCE BANK</span></div>
+              <div>RIB : <span class="bank-info" contenteditable="true">MA64 0118 1500 0011 2100 0094 4504</span></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-    </div>
-
-    <div class="footer">
-      <div>ICE: 003709007000096 | RC: 185955</div>
-      <div>E-mail : contact@delicella.ma</div>
+      <div class="footer">
+        <div>ICE: 003709007000096 | RC: 185955</div>
+        <div>E-mail : contact@delicella.ma</div>
+      </div>
     </div>
   </div>
 
@@ -653,15 +429,95 @@
   <script>
     const currencySymbols = { MAD: "DH", EUR: "€", USD: "$" };
 
+    /* =========================
+       iPhone Safari: Desktop mode but scaled to fit
+       ========================= */
+    const DESKTOP_KEY = "delicella_force_desktop_v1";
+
+    function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
+    function isSmallScreen(){ return window.matchMedia("(max-width: 980px)").matches; }
+
+    function applyDesktopScale(){
+      const invoice = document.getElementById("invoice");
+      const wrap = document.getElementById("invoiceWrap");
+      if(!invoice || !wrap) return;
+
+      invoice.style.transform = "none";
+      wrap.style.height = "auto";
+
+      const isOn = document.body.classList.contains("force-desktop");
+      if(!(isOn && isSmallScreen())) return;
+
+      const w = invoice.scrollWidth || invoice.getBoundingClientRect().width || invoice.offsetWidth;
+      const available = Math.max(320, window.innerWidth - 24);
+
+      let scale = available / w;
+      scale = Math.min(scale, 1);
+      scale = Math.max(scale, 0.52);
+
+      invoice.style.transform = `scale(${scale})`;
+
+      const h = invoice.scrollHeight || invoice.offsetHeight;
+      wrap.style.height = (h * scale) + "px";
+    }
+
+    function enableForceDesktop(on){
+      if(on){
+        document.body.classList.add("force-desktop");
+        localStorage.setItem(DESKTOP_KEY, "1");
+      }else{
+        document.body.classList.remove("force-desktop");
+        localStorage.setItem(DESKTOP_KEY, "0");
+      }
+      setTimeout(applyDesktopScale, 120);
+    }
+
+    function injectDesktopToggle(){
+      const target = document.querySelector(".sidebar .panel:last-child");
+      if(!target) return;
+
+      const btn = document.createElement("button");
+      btn.className = "btn";
+      btn.style.background = "#0ea5e9";
+      btn.style.color = "#fff";
+      btn.innerHTML = `<i class="fa-solid fa-desktop"></i> Mode PC (iPhone)`;
+
+      btn.onclick = () => {
+        const on = !document.body.classList.contains("force-desktop");
+        enableForceDesktop(on);
+        toast(on ? "✅ Mode PC ON" : "✅ Mode PC OFF");
+      };
+
+      target.prepend(btn);
+    }
+
+    /* =========================
+       Init
+       ========================= */
     window.onload = () => {
+      // flatpickr
       flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", animate:true, disableMobile:true });
       document.getElementById('invoiceNum').value = Math.floor(10000 + Math.random() * 90000);
 
+      // lines
       addLine(); addLine();
       updatePreview();
       calc();
+
+      // clients
       renderClients();
+
+      // iPhone toggle + default ON on iPhone
+      injectDesktopToggle();
+      const saved = localStorage.getItem(DESKTOP_KEY);
+      const shouldOn = saved === null ? true : saved === "1";
+      if(isIOS() && isSmallScreen() && shouldOn) document.body.classList.add("force-desktop");
+
+      setTimeout(applyDesktopScale, 160);
     };
+
+    window.addEventListener("resize", () => setTimeout(applyDesktopScale, 120));
+    window.addEventListener("orientationchange", () => setTimeout(applyDesktopScale, 200));
 
     function updatePreview(){
       const cur = document.getElementById("currency").value || "MAD";
@@ -693,12 +549,14 @@
       `;
       document.getElementById('lines').appendChild(tr);
       calc();
+      setTimeout(applyDesktopScale, 80);
     }
 
     function removeLine(btn){
       const row = btn.closest('tr');
       if(row) row.remove();
       calc();
+      setTimeout(applyDesktopScale, 80);
     }
 
     function calc() {
@@ -721,10 +579,17 @@
       document.getElementById('tht').innerText = total.toFixed(2) + " " + sym;
       document.getElementById('tva').innerText = tva.toFixed(2) + " " + sym;
       document.getElementById('ttc').innerText = ttc.toFixed(2) + " " + sym;
+
+      setTimeout(applyDesktopScale, 60);
     }
 
     function downloadPDF() {
       const element = document.getElementById('invoice');
+
+      // temporarily remove scale to export clean PDF
+      const oldTransform = element.style.transform;
+      element.style.transform = "none";
+
       const btn = document.querySelector('.btn-pdf');
       const oldHTML = btn.innerHTML;
       btn.innerHTML = "⏳ Génération...";
@@ -744,18 +609,22 @@
 
       html2pdf().from(element).set(opt).save().then(() => {
         btn.innerHTML = oldHTML;
+        element.style.transform = oldTransform;
+        setTimeout(applyDesktopScale, 120);
       }).catch(err => {
         alert("Erreur: " + err);
         btn.innerHTML = oldHTML;
+        element.style.transform = oldTransform;
+        setTimeout(applyDesktopScale, 120);
       });
     }
 
     /* =========================
-       ✅ Clients localStorage
+       Clients localStorage
        ========================= */
     const STORAGE_KEY = "delicella_clients_v1";
 
-    function loadClients(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch(e){ return []; } }
+    function loadClients(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }catch(e){ return []; } }
     function saveClients(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
     function getClientFromForm(){
@@ -778,7 +647,7 @@
     }
 
     function clientKey(c){
-      return ((c.phoneCode||"") + (c.phone||"")).replace(/\\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
+      return ((c.phoneCode||"") + (c.phone||"")).replace(/\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
     }
 
     function saveCurrentClient(){
@@ -882,6 +751,7 @@
         .replaceAll("'","&#039;");
     }
 
+    /* Toast */
     let toastTimer = null;
     function toast(msg){
       let t = document.getElementById("toastBox");
