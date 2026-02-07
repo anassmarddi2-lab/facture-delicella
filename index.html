@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Facture Delicella</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -19,40 +19,45 @@
 
     body{
       font-family:'Nunito',sans-serif;
-      background:#555; /* لون الخلفية رمادي باش تبان الورقة */
-      margin: 0;
-      padding: 20px;
-      padding-left: 350px; /* فـ PC كنخليو مساحة لليسار */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      box-sizing: border-box;
+      background:#555;
+      padding:20px;
+      padding-left:350px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+      margin: 0; /* Reset margin */
     }
 
-    /* Sidebar - القائمة الجانبية */
+    /* Sidebar */
     .sidebar{
-      position:fixed; top:20px; left:20px; width:300px; z-index:999;
-      display:flex; flex-direction:column; gap:18px; padding-bottom:12px;
+      position:fixed;top:20px;left:20px;width:300px;z-index:999;
+      display:flex;flex-direction:column;gap:18px;padding-bottom:12px;
+      opacity:0;transform:translateX(-10px);
+      animation:sideIn .55s cubic-bezier(.2,.9,.2,1) forwards;
     }
+    @keyframes sideIn{to{opacity:1;transform:translateX(0)}}
 
-    .panel, .currency-wrap{ margin-bottom:8px }
+    .panel,.currency-wrap{margin-bottom:8px}
     .panel{
-      background:rgba(255,255,255,.95);
+      background:rgba(255,255,255,.12);
       border:1px solid rgba(255,255,255,.20);
-      border-radius:18px; padding:14px;
+      border-radius:18px;padding:14px;
+      backdrop-filter:blur(12px);
       box-shadow:0 10px 22px rgba(0,0,0,.22);
-      display:flex; flex-direction:column; gap:14px;
+      display:flex;flex-direction:column;gap:14px;
     }
 
     .btn{
-      height:46px; width:100%; padding:0 16px; border:none; border-radius:16px;
-      font-weight:900; cursor:pointer; font-family:'Lexend'; white-space:nowrap;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      box-shadow:0 4px 10px rgba(0,0,0,.15);
-      transition:transform .1s;
+      height:46px;width:100%;padding:0 16px;border:none;border-radius:16px;
+      font-weight:900;cursor:pointer;font-family:'Lexend';white-space:nowrap;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      box-shadow:0 12px 26px rgba(0,0,0,.20);
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+      -webkit-tap-highlight-color:transparent;
     }
-    .btn:active{transform:scale(0.98)}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(0,0,0,.26);filter:brightness(1.03)}
+    .btn:active{transform:translateY(0)}
 
     .btn-clients{background:#111827;color:#fff}
     .btn-saveinfo{background:var(--gold);color:#1e293b}
@@ -60,173 +65,213 @@
     .btn-pdf{background:var(--primary);color:#fff}
 
     /* Devise / TVA */
-    .currency-wrap{position:relative; width:100%; height:46px}
+    .currency-wrap{position:relative;width:100%;height:46px}
     .currency-fab{
-      width:100%; height:46px; border-radius:14px;
-      background:#fff;
-      box-shadow:0 4px 10px rgba(0,0,0,.15);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 14px; cursor:pointer;
+      width:100%;height:46px;border-radius:14px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.35);
+      box-shadow:0 12px 26px rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 14px;cursor:pointer;user-select:none;
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+      -webkit-tap-highlight-color:transparent;
     }
-    .fab-top{display:flex; align-items:center; gap:10px; font-family:'Lexend'; font-weight:900; font-size:.72rem; color:#64748b;}
-    .fab-dot{width:10px; height:10px; border-radius:50%; background:var(--primary);}
-    .fab-bottom{font-family:'Lexend'; font-weight:900; font-size:.85rem; color:#0f172a;}
+    .currency-fab:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(0,0,0,.26);filter:brightness(1.02)}
+    .fab-top{display:flex;align-items:center;gap:10px;font-family:'Lexend';font-weight:900;font-size:.72rem;letter-spacing:1px;color:#64748b;text-transform:uppercase;white-space:nowrap}
+    .fab-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(214,0,28,.12);flex:0 0 auto}
+    .fab-bottom{font-family:'Lexend';font-weight:900;font-size:.85rem;color:#0f172a;white-space:nowrap}
 
     .currency-menu{
-      position:absolute; left:0; top:50px; width:100%;
-      background:#fff; border-radius:18px; padding:12px;
-      box-shadow:0 10px 30px rgba(0,0,0,.2);
-      display:none; z-index:1001;
+      position:absolute;left:calc(100% + 12px);top:0;width:230px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(148,163,184,.35);
+      border-radius:18px;
+      box-shadow:0 22px 60px rgba(0,0,0,.30);
+      backdrop-filter:blur(14px);
+      padding:12px;
+      display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;
+      opacity:0;transform:translateX(-6px);pointer-events:none;
+      transition:opacity .18s ease,transform .18s ease;
+      z-index:1200;
     }
-    .currency-wrap:hover .currency-menu { display:block; }
-    .currency-menu select, .currency-menu input{
-      width:100%; height:40px; margin-bottom:5px;
-      border-radius:8px; border:1px solid #ccc; text-align:center; font-weight:bold;
+    .currency-wrap:hover .currency-menu{opacity:1;transform:translateX(0);pointer-events:auto}
+    .currency-menu select,.currency-menu input{
+      height:40px;border-radius:14px;border:1px solid rgba(0,0,0,.12);
+      padding:0 12px;font-size:.92rem;font-weight:900;outline:none;
+      background:rgba(255,255,255,.98);
     }
+    .currency-menu input{text-align:center}
 
-    /* 🔥🔥 تصحيح العرض للموبايل (INVOICE WRAPPER) 🔥🔥 */
-    #invoiceWrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      /* ضروري باش ملي نصغرو الفاتورة، الـ Wrapper ياخد الطول الجديد */
+    /* 🔥 MODIFICATION 1: Invoice Wrapper Fix 🔥 */
+    #invoiceWrap{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      overflow:visible;
+      /* Important pour que le scale marche bien */
       transform-origin: top center; 
+      transition: height 0.3s ease;
     }
 
-    /* A4 Page */
-    .page-a4 {
-      width: 210mm; /* عرض ثابت لورقة A4 */
-      min-width: 793px; /* 🔥 مهم جداً: كيمنع العناصر يتزاحمو */
-      min-height: 296mm;
-      background: #fff;
-      position: relative;
-      display: flex; flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,.30);
-      margin: 0 auto;
-      transform-origin: top center; /* التصغير يبدا من الفوق */
+    /* 🔥 MODIFICATION 2: A4 Fix 🔥 */
+    .page-a4{
+      width:210mm;
+      min-height:296mm;
+      /* Force la largeur minimale pour ne pas casser le design */
+      min-width: 793px; 
+      background:#fff;
+      position:relative;
+      display:flex;flex-direction:column;
+      box-shadow:0 10px 30px rgba(0,0,0,.30);
+      padding:0;overflow:hidden;z-index:1;margin-top:0;
+      /* Le scale se fera via JS */
+      transform-origin: top center;
     }
 
     .watermark-container{
-      position:absolute; inset:0;
-      display:flex; justify-content:center; align-items:center;
-      z-index:0; opacity:.08; pointer-events:none;
+      position:absolute;inset:0;
+      display:flex;justify-content:center;align-items:center;
+      z-index:0;opacity:.08;pointer-events:none;
     }
-    .watermark-container img{width:75%; height:auto}
-
-    .header, .body, .footer{ position:relative; z-index:2 }
+    .watermark-container img{width:75%;height:auto}
+    .header,.body,.footer{position:relative;z-index:2}
 
     .header{
-      background:rgba(255,241,241,.85); padding:21px 40px 10px 40px;
+      background:rgba(255,241,241,.85);
+      padding:21px 40px 10px 40px;
       border-bottom:4px solid var(--gold);
-      display:flex; justify-content:space-between; align-items:flex-start;
+      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
     }
-    .header-left{display:flex; flex-direction:column}
+    .header-left{display:flex;flex-direction:column}
     .title{
-      font-family:'Lexend'; font-size:4.2rem; color:var(--primary);
-      margin:0; line-height:1; letter-spacing:2px;
+      font-family:'Lexend';font-size:4.2rem;color:var(--primary);
+      margin:0;line-height:1;text-transform:uppercase;letter-spacing:2px;margin-left:20px;
     }
-    .meta{margin-top:40px; display:flex; flex-direction:column; gap:10px}
-    .meta-row{display:flex; align-items:center; gap:10px; font-weight:800; color:var(--dark)}
-    .meta-row span{color:var(--primary); font-family:'Lexend'; font-size:.9rem}
+    .meta{margin-top:40px;display:flex;flex-direction:column;gap:10px}
+    .meta-row{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--dark)}
+    .meta-row span{color:var(--primary);font-family:'Lexend';font-size:.9rem}
     .meta-row input{
-      background:transparent; border:none; font-weight:800; font-size:1.1rem; color:var(--dark); width:140px;
+      background:transparent;border:none;font-weight:800;font-size:1.1rem;color:var(--dark);
+      width:140px;cursor:pointer;outline:none;
     }
-    .logo-box img{ height:250px; width:auto; margin-top:-50px }
+    .logo-box img{height:250px;width:auto;margin-top:-50px}
 
-    .body{ padding:25px 40px; flex:1; display:flex; flex-direction:column }
+    .body{padding:25px 40px;flex:1;display:flex;flex-direction:column}
 
-    .grid{ display:grid; grid-template-columns:.6fr 1.4fr; gap:0; margin-bottom:35px }
-    .grid>div:first-child{ border-right:3px solid var(--gold); padding-right:25px }
-    .client-section{ padding-left:25px }
+    .grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:0;margin-bottom:35px}
+    .grid>div:first-child{border-right:3px solid var(--gold);padding-right:25px}
+    .client-section{padding-left:25px}
 
     .box-title{
-      color:#000; font-size:.85rem; font-weight:800; display:inline-block;
-      padding-bottom:6px; margin-bottom:15px; border-bottom:3px solid var(--primary);
+      color:#000;font-size:.85rem;font-weight:800;display:inline-block;
+      padding-bottom:6px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1px;line-height:1;
+      box-shadow:inset 0 -3px 0 var(--primary);
     }
-    .company-info{ font-size:.95rem; line-height:1.5; color:var(--dark) }
+    .company-info{font-size:.95rem;line-height:1.5;color:var(--dark)}
 
-    .input-group{ display:flex; align-items:flex-start; margin-bottom:8px; border-bottom:1px dashed #ccc; padding-bottom:2px }
+    .input-group{display:flex;align-items:flex-start;margin-bottom:8px;border-bottom:1px dashed #ccc;padding-bottom:2px}
     .input-group label{
-      font-weight:700; color:var(--dark); font-size:.85rem; min-width:130px;
-      font-family:'Lexend'; padding-top:5px;
+      font-weight:700;color:var(--dark);font-size:.85rem;min-width:145px;
+      font-family:'Lexend';padding-top:5px;text-transform:uppercase;
     }
     .input-group input{
-      flex:1; border:none; background:transparent; font-weight:600; font-size:.95rem; color:#000; outline:none;
+      flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;
+      padding:5px 0 5px 10px;outline:none;
     }
 
-    .flow-box{ border-bottom:1px dashed #ccc; margin-bottom:8px; padding-bottom:5px; }
-    .flow-box label{ font-weight:700; font-size:.85rem; font-family:'Lexend'; margin-right:5px }
-    .flow-content{ font-weight:600; font-size:.95rem; outline:none; }
-    .flow-content:empty:before{ content:'...'; color:#aaa; }
+    .flow-box{border-bottom:1px dashed #ccc;margin-bottom:8px;padding-bottom:5px;cursor:text;display:block}
+    .flow-box label{font-weight:700;color:var(--dark);font-size:.85rem;font-family:'Lexend';text-transform:uppercase;display:inline;margin-right:5px}
+    .flow-content{display:inline;font-weight:600;font-size:.95rem;color:#000;outline:none;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+    .flow-content:empty:before{content:'...';color:#aaa;font-weight:400}
 
-    .phone-wrapper{ display:flex; align-items:center; flex:1 }
-    .phone-select{ border:none; background:transparent; font-weight:800; color:var(--primary); margin-right:8px; }
+    .phone-wrapper{display:flex;align-items:center;flex:1}
+    .phone-select{border:none;background:transparent;font-weight:800;font-size:.9rem;color:var(--primary);cursor:pointer;margin-right:8px;outline:none}
+    .phone-input{flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;outline:none;padding:5px 0 5px 10px}
 
-    table{ width:100%; border-collapse:collapse; margin-top:10px }
-    th{ text-align:left; padding:8px 5px; color:var(--primary); font-family:'Lexend'; font-size:.85rem; border-bottom:2px solid var(--primary); }
-    td{ padding:8px 5px; border-bottom:1px solid #f0f0f0 }
-    td input{ width:100%; border:none; font-weight:700; font-size:.95rem; background:transparent; outline:none }
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th{
+      text-align:left;padding:8px 5px;color:var(--primary);
+      font-family:'Lexend';font-size:.85rem;border-bottom:none!important;
+    }
+    thead{position:relative}
+    thead:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--primary)}
+    td{padding:8px 5px;border-bottom:1px solid #f0f0f0}
+    td input{width:100%;border:none;font-weight:700;font-size:.95rem;background:transparent;outline:none}
 
-    .delete-btn{ background:transparent; border:none; color:var(--primary); font-weight:900; font-size:1.1rem; cursor:pointer; }
-    
-    .totals-section{ display:flex; justify-content:flex-end; margin-top:30px }
-    .totals-box{ width:240px; padding:10px; border:1px solid #eee; border-radius:8px }
-    .row{ display:flex; justify-content:space-between; padding:6px 0; font-weight:700; color:#64748b; font-size:.9rem }
-    .row.final{ color:var(--primary); font-size:1.1rem; border-top:2px solid var(--primary); margin-top:5px; padding-top:5px }
+    .delete-btn{
+      background:transparent;border:none;cursor:pointer;color:var(--primary);
+      font-weight:900;font-size:1.1rem;padding:2px 6px;border-radius:6px;line-height:1;
+    }
+    .delete-btn:hover{background:rgba(214,0,28,.10)}
 
-    .payment-section{ margin-top:40px; }
-    .payment-box{ background:rgba(255,241,241,.4); padding:15px; border-radius:8px; border-left:3px solid var(--gold); width:fit-content }
-    .payment-title{ font-family:'Lexend'; font-weight:800; color:var(--primary); border-bottom:2px solid var(--gold); margin-bottom:5px; }
-    .bank-info{ font-weight:800; color:#000; }
+    .totals-section{display:flex;justify-content:flex-end;margin-top:30px}
+    .totals-box{width:240px;background:transparent;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,.05)}
+    .row{display:flex;justify-content:space-between;padding:6px 0;font-weight:700;color:#64748b;font-size:.9rem}
+    .row.final{color:var(--primary);font-size:1.1rem;border-top:2px solid var(--primary);margin-top:5px;padding-top:5px;font-family:'Lexend'}
 
-    .footer{ padding:15px 40px; border-top:2px solid var(--gold); font-size:.75rem; color:#94a3b8; display:flex; justify-content:space-between; font-weight:700; margin-top:auto; }
+    .payment-section{margin-top:40px;display:flex;justify-content:flex-start}
+    .payment-box{font-size:.9rem;color:var(--dark);background:rgba(255,241,241,.4);padding:15px;border-radius:8px;border-left:3px solid var(--gold);min-width:300px}
+    .payment-title{font-family:'Lexend';font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:5px;font-size:.95rem;display:inline-block;border-bottom:2px solid var(--gold);padding-bottom:2px}
+    .payment-details{line-height:1.6;margin-top:5px}
+    .bank-info{font-weight:800;color:#000;font-size:1rem}
 
-    /* Modal Clients */
-    .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:2000; display:none; align-items:center; justify-content:center; }
-    .modal-backdrop.open{ display:flex }
-    .modal{ width:90%; max-width:600px; background:#fff; border-radius:18px; height:80vh; display:flex; flex-direction:column; overflow:hidden; }
-    .modal-header{ padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; background:#f8fafc; }
-    .modal-body{ padding:15px; overflow-y:auto; flex:1; }
-    .client-card{ border:1px solid #eee; padding:10px; margin-bottom:10px; border-radius:10px; background:#fff; }
-    .card-actions { margin-top: 10px; display: flex; gap: 10px; }
-    .choose-btn { flex:1; background: #111827; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    .trash-btn { background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+    .footer{padding:15px 40px;border-top:2px solid var(--gold);font-size:.75rem;color:#94a3b8;display:flex;justify-content:space-between;font-weight:700;margin-top:auto;gap:10px}
+    .no-print{display:block}
 
-    /* 📱📱 Media Queries للموبايل 📱📱 */
-    @media (max-width: 980px) {
+    /* Modal clients */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;align-items:center;justify-content:center;padding:18px}
+    .modal-backdrop.open{display:flex}
+    .modal{width:min(980px,96vw);height:min(620px,86vh);background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.30);border-radius:22px;box-shadow:0 25px 80px rgba(0,0,0,.35);backdrop-filter:blur(14px);overflow:hidden}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:rgba(248,250,252,.85);border-bottom:1px solid rgba(15,23,42,.08);gap:10px}
+    .modal-title{font-family:'Lexend';font-weight:900;color:var(--primary);font-size:1.55rem}
+    .modal-search{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.9);border:1px solid rgba(148,163,184,.35);border-radius:999px;padding:10px 14px;width:min(420px,50vw)}
+    .modal-search i{color:#94a3b8}
+    .modal-search input{border:none;outline:none;background:transparent;width:100%;font-weight:700;font-size:.95rem}
+    .modal-close{border:none;background:transparent;font-size:1.35rem;font-weight:900;cursor:pointer;color:#0f172a;width:42px;height:42px;border-radius:12px}
+    .modal-close:hover{background:rgba(15,23,42,.08)}
+    .modal-body{padding:18px;height:calc(100% - 76px);overflow:auto}
+    .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .client-card{background:rgba(255,255,255,.92);border:1px solid rgba(148,163,184,.30);border-radius:18px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.10);display:flex;flex-direction:column;gap:10px;min-height:170px}
+    .avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lexend';font-weight:900;color:#fff;background:var(--primary)}
+    .client-name{font-family:'Lexend';font-weight:900;color:#0f172a;font-size:1.05rem}
+    .client-line{display:flex;align-items:center;gap:10px;color:#64748b;font-weight:800;font-size:.92rem}
+    .client-line i{color:#94a3b8;width:16px;text-align:center}
+    .card-actions{margin-top:6px;display:flex;align-items:center;gap:10px}
+    .choose-btn{flex:1;height:38px;border-radius:12px;border:none;background:#111827;color:#fff;font-family:'Lexend';font-weight:900;cursor:pointer}
+    .trash-btn{width:42px;height:38px;border-radius:12px;border:none;cursor:pointer;background:rgba(239,68,68,.12);color:#ef4444;font-size:1.05rem}
+    .empty-state{padding:30px;text-align:center;color:#64748b;font-weight:900;background:rgba(255,255,255,.7);border:1px dashed rgba(148,163,184,.5);border-radius:18px}
+
+    /* ✅ iPhone/Mobile: نفس PC ولكن مصغر (scale) */
+    @media (max-width:980px){
+      input,select,textarea{font-size:16px!important} /* منع zoom */
       body {
-        padding: 0;
-        padding-top: 15px; /* مساحة شوية من الفوق */
-        display: block; /* نحيدو flex باش ميتخربقش */
-        background: #333; /* خلفية أغمق شوية فالموبايل */
+        padding: 0 !important;
+        display: block !important;
+        background: #333; /* خلفية داكنة باش تبان الفاتورة */
       }
-      
-      .sidebar {
-        position: relative;
-        top: 0; left: 0;
-        width: 100%;
+      .sidebar{
+        position:relative!important;
+        top:0!important;left:0!important;
+        width:100%!important;
+        transform:none!important;
+        margin-bottom:14px!important;
+        opacity:1!important;
+        animation:none!important;
         padding: 10px;
         box-sizing: border-box;
-        margin-bottom: 10px;
       }
-      
       .panel {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 10px;
+        flex-direction: row; flex-wrap: wrap; justify-content: center;
       }
-      
       .panel button, .currency-wrap {
-        flex: 1 1 40%; /* الأزرار تجي وحدة حدا وحدة */
-        min-width: 140px;
+        flex: 1 1 45%; min-width: 130px;
       }
-
-      /* الفاتورة كتبقى كبيرة وحنا كنصغروها بالـ JS */
+      .currency-menu{left:0!important;top:56px!important;width:100%!important}
+      
+      /* الفاتورة كتبقى بعبارها الأصلي وحنا كنصغروها بـ JS */
       #invoice {
         margin: 0 auto;
-        /* الظل باش تبان معزولة */
-        box-shadow: 0 0 20px rgba(0,0,0,0.5); 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
       }
     }
   </style>
@@ -237,55 +282,59 @@
   <div class="sidebar no-print">
     <div class="panel">
       <button class="btn btn-clients" id="openClients">
-        <i class="fa-solid fa-users"></i> Clients
+        <i class="fa-solid fa-users"></i> Clients Enregistrés
       </button>
       <button class="btn btn-saveinfo" id="saveClient">
-        <i class="fa-solid fa-floppy-disk"></i> Sauvegarder
+        <i class="fa-solid fa-floppy-disk"></i> Sauvegarder Info
       </button>
     </div>
 
     <div class="currency-wrap">
-      <div class="currency-fab">
-        <div class="fab-top"><span class="fab-dot"></span><span>OPTIONS</span></div>
+      <div class="currency-fab" title="Devise & TVA">
+        <div class="fab-top"><span class="fab-dot"></span><span>TVA / DEVISE</span></div>
         <div class="fab-bottom"><span id="curPreview">MAD</span> • <span id="tvaPreview">20%</span></div>
       </div>
       <div class="currency-menu">
         <select id="currency" onchange="calc(); updatePreview()">
-          <option value="MAD" selected>MAD (DH)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="USD">USD ($)</option>
+          <option value="MAD" selected>MAD</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
         </select>
-        <input id="tvaRate" type="number" value="20" placeholder="TVA %" oninput="calc(); updatePreview()" />
+        <input id="tvaRate" type="number" value="20" min="0" step="0.1" oninput="calc(); updatePreview()" />
       </div>
     </div>
 
     <div class="panel">
       <button class="btn btn-add" type="button" onclick="addLine()">
-        <i class="fa-solid fa-plus"></i> Ligne
+        <i class="fa-solid fa-plus"></i> Ajouter Ligne
       </button>
       <button class="btn btn-pdf" type="button" onclick="downloadPDF()">
-        <i class="fa-solid fa-file-pdf"></i> PDF
+        <i class="fa-solid fa-file-pdf"></i> Télécharger PDF
       </button>
     </div>
   </div>
 
   <div class="modal-backdrop" id="clientsModalBackdrop">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="clientsTitle">
       <div class="modal-header">
-        <h3 style="margin:0; color:var(--primary)">Mes Clients</h3>
-        <button id="closeClients" style="background:none; border:none; font-size:1.5rem;">&times;</button>
+        <div class="modal-title" id="clientsTitle">Mes Clients</div>
+        <div class="modal-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="clientSearch" type="text" placeholder="Rechercher..." />
+        </div>
+        <button class="modal-close" id="closeClients" title="Fermer">×</button>
       </div>
-      <div style="padding:10px; border-bottom:1px solid #eee;">
-        <input id="clientSearch" type="text" placeholder="Rechercher..." style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+      <div class="modal-body">
+        <div class="clients-grid" id="clientsGrid"></div>
+        <div class="empty-state" id="clientsEmpty" style="display:none;">Aucun client enregistré pour le moment.</div>
       </div>
-      <div class="modal-body" id="clientsGrid"></div>
     </div>
   </div>
 
   <div id="invoiceWrap">
     <div class="page-a4" id="invoice">
       <div class="watermark-container">
-        <img src="" alt=""> 
+        <img src="data:image/png;base64,....(CODE-WATERMARK-HNA)...." alt="Watermark">
       </div>
 
       <div class="header">
@@ -297,7 +346,7 @@
           </div>
         </div>
         <div class="logo-box">
-          <img src="" alt="Logo"> 
+          <img src="data:image/png;base64,....(CODE-LOGO-HNA)...." alt="Logo">
         </div>
       </div>
 
@@ -342,6 +391,8 @@
                   <option value="+212">🇲🇦 +212</option>
                   <option value="+33">🇫🇷 +33</option>
                   <option value="+1">🇺🇸 +1</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+971">🇦🇪 +971</option>
                 </select>
                 <input class="phone-input" type="text" id="c_phone" placeholder="6 00 00 00 00">
               </div>
@@ -398,60 +449,61 @@
   <script>
     const currencySymbols = { MAD: "DH", EUR: "€", USD: "$" };
 
-    /* =================================================
-       🔥 AUTO-SCALE SCRIPT FOR IPHONE/MOBILE 🔥
-       ================================================= */
-    function autoFitMobile() {
-      const invoice = document.getElementById('invoice');
-      const wrap = document.getElementById('invoiceWrap');
+    /* =========================
+       🔥 NEW IPHONE FIX LOGIC 🔥
+       ========================= */
+    function applyDesktopScale(){
+      const invoice = document.getElementById("invoice");
+      const wrap = document.getElementById("invoiceWrap");
       if(!invoice || !wrap) return;
 
-      // العرض الأصلي ديال A4 بالبيكسل (تقريبي)
-      const a4Width = 794; 
-      // عرض الشاشة المتوفر
+      // العرض الحقيقي للورقة
+      const originalWidth = 793; 
+      // العرض المتوفر في الشاشة
       const screenWidth = window.innerWidth;
 
-      if(screenWidth < 980) { // غير فالموبايل والتابليت
-        // كنخليو شوية ديال الهامش (20px)
-        const scale = (screenWidth - 20) / a4Width;
+      if(screenWidth < 980){
+        // حساب نسبة التصغير
+        const scale = (screenWidth - 20) / originalWidth; 
         
-        // كنصغرو الفاتورة
+        // تطبيق التصغير
         invoice.style.transform = `scale(${scale})`;
         
-        // كنصلحو الطول ديال الـ Wrapper باش ميبقاش فراغ كبير لتحت
-        // الـ 50px غير هامش إضافي
+        // تعديل الطول باش ما يبقاش فراغ كبير لتحت
         const newHeight = (invoice.offsetHeight * scale) + 50;
         wrap.style.height = newHeight + "px";
-        wrap.style.marginBottom = "50px"; // مساحة زايدة لتحت
+        wrap.style.marginBottom = "80px"; // Espace extra pour le scroll
       } else {
-        // فـ PC كنحيدو الـ Scale
+        // PC Mode: Normal
         invoice.style.transform = "none";
         wrap.style.height = "auto";
         wrap.style.marginBottom = "0";
       }
     }
 
-    // تنفيد الدالة في كل الحالات
-    window.addEventListener('load', autoFitMobile);
-    window.addEventListener('resize', autoFitMobile);
-    window.addEventListener('orientationchange', autoFitMobile);
-
     /* =========================
        Init
        ========================= */
     window.onload = () => {
-      flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", disableMobile:true });
+      // flatpickr
+      flatpickr("#date", { locale:"fr", dateFormat:"d/m/Y", defaultDate:"today", animate:true, disableMobile:true });
       document.getElementById('invoiceNum').value = Math.floor(10000 + Math.random() * 90000);
+
+      // lines
       addLine(); addLine();
       updatePreview();
       calc();
+
+      // clients
       renderClients();
-      autoFitMobile(); // Trigger scale immediately
+
+      // Trigger Scale
+      applyDesktopScale();
     };
 
-    /* =========================
-       Functions Standard
-       ========================= */
+    window.addEventListener("resize", () => setTimeout(applyDesktopScale, 120));
+    window.addEventListener("orientationchange", () => setTimeout(applyDesktopScale, 200));
+
     function updatePreview(){
       const cur = document.getElementById("currency").value || "MAD";
       const tva = parseFloat(document.getElementById("tvaRate").value);
@@ -472,23 +524,24 @@
       const sym = getCurrencySymbol();
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><input type="text" list="produits-list" placeholder="Article..."></td>
+        <td><input type="text" list="produits-list" placeholder="Article ou Service..."></td>
         <td><input class="qty" type="number" value="1" style="text-align:center" oninput="calc()"></td>
         <td><input class="pu" type="number" placeholder="0.00" style="text-align:right" oninput="calc()"></td>
         <td style="text-align:right; font-weight:800; color:#1e293b">0.00 ${sym}</td>
         <td class="no-print" style="text-align:right;">
-          <button class="delete-btn" type="button" onclick="removeLine(this)">✖</button>
+          <button class="delete-btn" type="button" onclick="removeLine(this)" title="Supprimer">✖</button>
         </td>
       `;
       document.getElementById('lines').appendChild(tr);
       calc();
-      setTimeout(autoFitMobile, 100); // Re-calc height if needed
+      setTimeout(applyDesktopScale, 80);
     }
 
     function removeLine(btn){
-      btn.closest('tr').remove();
+      const row = btn.closest('tr');
+      if(row) row.remove();
       calc();
-      setTimeout(autoFitMobile, 100);
+      setTimeout(applyDesktopScale, 80);
     }
 
     function calc() {
@@ -511,107 +564,204 @@
       document.getElementById('tht').innerText = total.toFixed(2) + " " + sym;
       document.getElementById('tva').innerText = tva.toFixed(2) + " " + sym;
       document.getElementById('ttc').innerText = ttc.toFixed(2) + " " + sym;
+
+      setTimeout(applyDesktopScale, 60);
     }
 
     function downloadPDF() {
       const element = document.getElementById('invoice');
-      
-      // ✅ Cancel Scaling Temporary for Clear PDF
-      const originalTransform = element.style.transform;
+
+      // temporarily remove scale to export clean PDF
+      const oldTransform = element.style.transform;
       element.style.transform = "none";
-      
+
       const btn = document.querySelector('.btn-pdf');
       const oldHTML = btn.innerHTML;
-      btn.innerHTML = "⏳ ...";
+      btn.innerHTML = "⏳ Génération...";
 
       const opt = {
         margin: 0,
-        filename: 'Facture.pdf',
+        filename: 'Facture_Delicella.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          scrollY: 0,
+          ignoreElements: (el) => el.classList?.contains('no-print')
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
       html2pdf().from(element).set(opt).save().then(() => {
         btn.innerHTML = oldHTML;
-        element.style.transform = originalTransform; // Restore scale for phone
-        autoFitMobile();
+        element.style.transform = oldTransform;
+        setTimeout(applyDesktopScale, 120);
       }).catch(err => {
-        alert("Erreur PDF");
-        element.style.transform = originalTransform;
+        alert("Erreur: " + err);
         btn.innerHTML = oldHTML;
+        element.style.transform = oldTransform;
+        setTimeout(applyDesktopScale, 120);
       });
     }
 
     /* =========================
-       Clients Logic (Simplified)
+       Clients localStorage
        ========================= */
-    const STORAGE_KEY = "delicella_clients";
+    const STORAGE_KEY = "delicella_clients_v1";
+
     function loadClients(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }catch(e){ return []; } }
     function saveClients(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
-    document.getElementById("saveClient").addEventListener("click", () => {
-       const name = document.getElementById("c_name").value;
-       const company = document.getElementById("c_company").innerText;
-       if(!name && !company) return alert("Nom ou Société requis!");
-       
-       const c = {
-         id: Date.now(),
-         name, company,
-         ice: document.getElementById("c_ice").innerText,
-         address: document.getElementById("c_address").innerText,
-         phone: document.getElementById("c_phone").value,
-         phoneCode: document.getElementById("c_phone_code").value
-       };
-       
-       const list = loadClients();
-       list.unshift(c);
-       saveClients(list);
-       alert("Client Sauvegardé!");
-       renderClients();
+    function getClientFromForm(){
+      const name = (document.getElementById("c_name").value || "").trim();
+      const company = (document.getElementById("c_company").innerText || "").trim();
+      const ice = (document.getElementById("c_ice").innerText || "").trim();
+      const address = (document.getElementById("c_address").innerText || "").trim();
+      const phoneCode = document.getElementById("c_phone_code").value || "+212";
+      const phone = (document.getElementById("c_phone").value || "").trim();
+      return { name, company, ice, address, phoneCode, phone };
+    }
+
+    function fillFormWithClient(c){
+      document.getElementById("c_name").value = c.name || "";
+      document.getElementById("c_company").innerText = c.company || "";
+      document.getElementById("c_ice").innerText = c.ice || "";
+      document.getElementById("c_address").innerText = c.address || "";
+      document.getElementById("c_phone_code").value = c.phoneCode || "+212";
+      document.getElementById("c_phone").value = c.phone || "";
+    }
+
+    function clientKey(c){
+      return ((c.phoneCode||"") + (c.phone||"")).replace(/\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
+    }
+
+    function saveCurrentClient(){
+      const c = getClientFromForm();
+      if(!c.name && !c.company){ alert("دخل على الأقل Nom du client ولا Société Nom قبل الحفظ."); return; }
+
+      const list = loadClients();
+      const k = clientKey(c);
+      const idx = list.findIndex(x => clientKey(x) === k);
+
+      if(idx >= 0) list[idx] = { ...list[idx], ...c, updatedAt: Date.now() };
+      else list.unshift({ ...c, id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), createdAt: Date.now() });
+
+      saveClients(list);
+      renderClients();
+      toast("✅ Client sauvegardé");
+    }
+
+    function deleteClient(id){
+      const list = loadClients().filter(c => c.id !== id);
+      saveClients(list);
+      renderClients();
+    }
+
+    const modalBackdrop = document.getElementById("clientsModalBackdrop");
+    const openClientsBtn = document.getElementById("openClients");
+    const closeClientsBtn = document.getElementById("closeClients");
+    const saveClientBtn = document.getElementById("saveClient");
+    const searchInput = document.getElementById("clientSearch");
+
+    openClientsBtn.addEventListener("click", () => {
+      modalBackdrop.classList.add("open");
+      searchInput.value = "";
+      renderClients();
+      setTimeout(() => searchInput.focus(), 80);
     });
+    closeClientsBtn.addEventListener("click", () => modalBackdrop.classList.remove("open"));
+    modalBackdrop.addEventListener("click", (e) => { if(e.target === modalBackdrop) modalBackdrop.classList.remove("open"); });
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape") modalBackdrop.classList.remove("open"); });
+
+    saveClientBtn.addEventListener("click", saveCurrentClient);
+    searchInput.addEventListener("input", renderClients);
 
     function renderClients(){
       const grid = document.getElementById("clientsGrid");
-      const list = loadClients();
-      const search = document.getElementById("clientSearch").value.toLowerCase();
-      
+      const empty = document.getElementById("clientsEmpty");
+      const q = (searchInput?.value || "").trim().toLowerCase();
+
+      const list = loadClients().filter(c => {
+        if(!q) return true;
+        const hay = `${c.name||""} ${c.company||""} ${c.address||""} ${c.phoneCode||""} ${c.phone||""} ${c.ice||""}`.toLowerCase();
+        return hay.includes(q);
+      });
+
       grid.innerHTML = "";
-      list.filter(c => (c.name+c.company).toLowerCase().includes(search)).forEach(c => {
-        const div = document.createElement("div");
-        div.className = "client-card";
-        div.innerHTML = `
-          <strong>${c.name || c.company}</strong><br>
-          <small>${c.address}</small>
+      if(list.length === 0){ empty.style.display = "block"; return; }
+      empty.style.display = "none";
+
+      list.forEach(c => {
+        const letter = ((c.name || c.company || "?").trim()[0] || "?").toUpperCase();
+        const card = document.createElement("div");
+        card.className = "client-card";
+        card.innerHTML = `
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="avatar">${letter}</div>
+            <div style="min-width:0;">
+              <div class="client-name">${escapeHtml(c.name || c.company || "Client")}</div>
+              <div style="color:#94a3b8; font-weight:900; font-size:0.82rem; margin-top:2px;">
+                ${escapeHtml(c.company || "")}
+              </div>
+            </div>
+          </div>
+
+          <div class="client-line"><i class="fa-solid fa-location-dot"></i><span>${escapeHtml(c.address || "—")}</span></div>
+          <div class="client-line"><i class="fa-solid fa-phone"></i><span>${escapeHtml(((c.phoneCode||"") + " " + (c.phone||"")).trim() || "—")}</span></div>
+
           <div class="card-actions">
-            <button class="choose-btn">CHOISIR</button>
-            <button class="trash-btn">Suppr.</button>
+            <button class="choose-btn" type="button">CHOISIR</button>
+            <button class="trash-btn" type="button" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
-        div.querySelector(".choose-btn").onclick = () => {
-          document.getElementById("c_name").value = c.name;
-          document.getElementById("c_company").innerText = c.company;
-          document.getElementById("c_ice").innerText = c.ice;
-          document.getElementById("c_address").innerText = c.address;
-          document.getElementById("c_phone").value = c.phone;
-          document.getElementById("clientsModalBackdrop").classList.remove("open");
-        };
-        div.querySelector(".trash-btn").onclick = () => {
-          if(confirm("Supprimer?")) {
-             saveClients(list.filter(x => x.id !== c.id));
-             renderClients();
-          }
-        };
-        grid.appendChild(div);
+
+        card.querySelector(".choose-btn").addEventListener("click", () => {
+          fillFormWithClient(c);
+          modalBackdrop.classList.remove("open");
+          toast("✅ Client sélectionné");
+        });
+
+        card.querySelector(".trash-btn").addEventListener("click", () => {
+          if(confirm("Supprimer ce client ?")) deleteClient(c.id);
+        });
+
+        grid.appendChild(card);
       });
     }
 
-    // Modal Events
-    const modal = document.getElementById("clientsModalBackdrop");
-    document.getElementById("openClients").onclick = () => modal.classList.add("open");
-    document.getElementById("closeClients").onclick = () => modal.classList.remove("open");
-    document.getElementById("clientSearch").oninput = renderClients;
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;").replaceAll("<","&lt;")
+        .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
+    /* Toast */
+    let toastTimer = null;
+    function toast(msg){
+      let t = document.getElementById("toastBox");
+      if(!t){
+        t = document.createElement("div");
+        t.id = "toastBox";
+        t.style.cssText = `
+          position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+          background: rgba(17,24,39,0.92); color: #fff;
+          padding: 12px 16px; border-radius: 14px;
+          font-family: 'Lexend'; font-weight: 900; font-size: 0.9rem;
+          box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+          z-index: 5000; opacity: 0; transition: opacity .18s ease, transform .18s ease;
+        `;
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity = "1";
+      t.style.transform = "translateX(-50%) translateY(-2px)";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.style.opacity = "0";
+        t.style.transform = "translateX(-50%) translateY(6px)";
+      }, 1400);
+    }
   </script>
 </body>
 </html>
