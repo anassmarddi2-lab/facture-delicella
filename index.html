@@ -17,18 +17,36 @@
   <style>
     :root { --primary:#d6001c; --gold:#cfb04a; --dark:#1e293b; --bg:#fff1f1; }
 
-    /* ✅ BODY */
+    /* ✅ BODY (PC) */
     body{
       font-family: 'Nunito', sans-serif;
       background: #555;
       padding: 20px;
-      padding-left: 350px; /* ✅ زدت شوية باش sidebar مايدخلش على A4 */
+      padding-left: 350px; /* ✅ مساحة للـ sidebar فـ PC */
       display: flex;
       justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    /* ✅ A4: ما تخرجش برا الشاشة */
+    .page-a4{
+      width: 210mm;
+      min-height: 296mm;
+      max-width: calc(100vw - 40px);
+      background: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      padding: 0;
+      overflow: hidden;
+      z-index: 1;
+      margin-top: 0;
     }
 
     /* =========================
-       ✅ SIDEBAR LEFT (مسافات أقوى)
+       ✅ SIDEBAR LEFT (PC)
        ========================= */
     .sidebar{
       position: fixed;
@@ -39,9 +57,8 @@
 
       display: flex;
       flex-direction: column;
-
-      gap: 36px;            /* ✅ المسافة الكبيرة بين البلوكات */
-      padding-bottom: 12px; /* ✅ باش مايبانش shadow لاصق */
+      gap: 18px;
+      padding-bottom: 12px;
 
       opacity: 0;
       transform: translateX(-10px);
@@ -49,7 +66,6 @@
     }
     @keyframes sideIn{ to{ opacity:1; transform: translateX(0);} }
 
-    /* ✅ باش كل bloc يكون عندو مسافة حقيقية */
     .panel,
     .currency-wrap{
       margin-bottom: 8px;
@@ -61,8 +77,7 @@
       border-radius: 18px;
       padding: 14px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.22); /* ✅ خففنا shadow */
-
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -86,6 +101,7 @@
 
       box-shadow: 0 12px 26px rgba(0,0,0,0.20);
       transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{ transform: translateY(-1px); box-shadow: 0 16px 34px rgba(0,0,0,0.26); filter: brightness(1.03); }
     .btn:active{ transform: translateY(0px); }
@@ -101,10 +117,9 @@
     .currency-wrap{
       position: relative;
       width: 100%;
-      height: 46px; /* ✅ صغير */
+      height: 46px;
     }
 
-    /* ✅ Rectangle */
     .currency-fab{
       width: 100%;
       height: 46px;
@@ -122,6 +137,7 @@
       cursor: pointer;
       user-select:none;
       transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .currency-fab:hover{
@@ -158,10 +174,9 @@
       white-space: nowrap;
     }
 
-    /* ✅ menu فاليمين */
     .currency-menu{
       position: absolute;
-      left: calc(100% + 12px); /* ✅ يجي على اليمين مع space */
+      left: calc(100% + 12px);
       top: 0;
 
       width: 230px;
@@ -204,46 +219,67 @@
     .currency-menu input{ text-align:center; }
 
     /* =========================
-       ✅ Responsive
+       ✅ MOBILE FIX (المهم)
        ========================= */
     @media (max-width: 980px){
-      body{ padding-left: 20px; padding-top: 310px; }
+
+      /* ✅ layout عادي: sidebar فوق و invoice تحت */
+      body{
+        padding: 12px;
+        padding-left: 12px;
+        padding-top: 12px;
+        display: block;
+      }
+
       .sidebar{
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(560px, calc(100vw - 40px));
-        top: 18px;
-        gap: 14px;
-      }
-      .currency-wrap{ height: 46px; }
-      .currency-menu{
+        position: relative;   /* ✅ مايبقاش fixed */
+        top: 0;
         left: 0;
-        top: 56px; /* ✅ فالموبايل خليه تحت باش ما يخرجش برا */
         width: 100%;
-      }
-      .currency-wrap:hover .currency-menu{
+        transform: none;
+        z-index: 5;
+        gap: 12px;
+        margin-bottom: 14px;  /* ✅ مسافة قبل الفاتورة */
+        animation: none;
         opacity: 1;
-        transform: translateX(0);
+      }
+
+      .panel{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .panel:last-child{
+        grid-template-columns: 1fr;
+      }
+
+      .btn{
+        height: 44px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+      }
+
+      /* ✅ Menu ديال TVA/Devise يبقى تحت */
+      .currency-menu{
+        left: 0 !important;
+        top: 56px !important;
+        width: 100% !important;
+      }
+
+      /* ✅ مهم فـ iPhone: منع zoom ديال Safari */
+      input, select, textarea{
+        font-size: 16px !important;
+      }
+
+      .page-a4{
+        max-width: 100%;
+        margin: 0 auto;
       }
     }
 
     /* =========================
-       ✅ Page A4 (باقي الكود كما هو)
+       ✅ Invoice styles (باقي الكود كما هو)
        ========================= */
-    .page-a4{
-      width: 210mm;
-      min-height: 296mm;
-      background: white;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      padding: 0;
-      overflow: hidden;
-      z-index: 1;
-      margin-top: 0;
-    }
-
     .watermark-container{
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       display: flex; justify-content: center; align-items: center;
@@ -375,7 +411,7 @@
 
     .no-print{ display:block; }
 
-    /* ✅ Modal clients (نفس اللي قبل، مختصر) */
+    /* ✅ Modal clients */
     .modal-backdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 18px; }
     .modal-backdrop.open{ display:flex; }
     .modal{ width: min(980px, 96vw); height: min(620px, 86vh); background: rgba(255,255,255,0.94); border: 1px solid rgba(255,255,255,0.30); border-radius: 22px; box-shadow: 0 25px 80px rgba(0,0,0,0.35); backdrop-filter: blur(14px); overflow: hidden; }
@@ -403,7 +439,7 @@
 
 <body>
 
-  <!-- ✅ SIDEBAR LEFT -->
+  <!-- ✅ SIDEBAR -->
   <div class="sidebar no-print">
     <div class="panel">
       <button class="btn btn-clients" id="openClients">
@@ -417,7 +453,7 @@
       </button>
     </div>
 
-    <!-- ✅ Devise/TVA rectangle + menu فاليمين -->
+    <!-- ✅ Devise/TVA -->
     <div class="currency-wrap">
       <div class="currency-fab" title="Devise & TVA">
         <div class="fab-top">
@@ -473,6 +509,7 @@
   <!-- ✅ INVOICE -->
   <div class="page-a4" id="invoice">
     <div class="watermark-container">
+      <!-- 🔴 حط هنا base64 ديال watermark -->
       <img src="data:image/png;base64,....(CODE-WATERMARK-HNA)...." alt="Watermark">
     </div>
 
@@ -485,6 +522,7 @@
         </div>
       </div>
       <div class="logo-box">
+        <!-- 🔴 حط هنا base64 ديال logo -->
         <img src="data:image/png;base64,....(CODE-LOGO-HNA)...." alt="Logo">
       </div>
     </div>
@@ -660,8 +698,8 @@
     function downloadPDF() {
       const element = document.getElementById('invoice');
       const btn = document.querySelector('.btn-pdf');
-      const oldText = btn.innerText;
-      btn.innerText = "⏳ Génération...";
+      const oldHTML = btn.innerHTML;
+      btn.innerHTML = "⏳ Génération...";
 
       const opt = {
         margin: 0,
@@ -677,15 +715,15 @@
       };
 
       html2pdf().from(element).set(opt).save().then(() => {
-        btn.innerText = oldText;
+        btn.innerHTML = oldHTML;
       }).catch(err => {
         alert("Erreur: " + err);
-        btn.innerText = oldText;
+        btn.innerHTML = oldHTML;
       });
     }
 
     /* =========================
-       ✅ Clients localStorage (كما هو)
+       ✅ Clients localStorage
        ========================= */
     const STORAGE_KEY = "delicella_clients_v1";
 
@@ -712,7 +750,7 @@
     }
 
     function clientKey(c){
-      return ((c.phoneCode||"") + (c.phone||"")).replace(/\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
+      return ((c.phoneCode||"") + (c.phone||"")).replace(/\\s/g,"") || ((c.name||"") + "|" + (c.company||"")).toLowerCase();
     }
 
     function saveCurrentClient(){
