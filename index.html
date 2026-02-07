@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Facture Delicella - Mobile Fixed</title>
+  <title>Facture Delicella - A4 Fixed</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -27,7 +27,6 @@
       align-items:flex-start;
       min-height:100vh;
       margin: 0;
-      /* Scroll smooth */
       overflow-x: hidden;
     }
 
@@ -122,7 +121,7 @@
       transition: height 0.3s ease;
     }
 
-    /* A4 Page */
+    /* A4 Page - DIMENSIONS STANDARD */
     .page-a4{
       width:210mm;
       min-height:296mm;
@@ -143,40 +142,42 @@
     .watermark-container img{width:75%;height:auto}
     .header,.body,.footer{position:relative;z-index:2}
 
+    /* 🔥 PADDING AJUSTÉ POUR RENTRER DANS 1 PAGE */
     .header{
       background:rgba(255,241,241,.85);
-      padding:30px 45px 15px 45px; 
+      padding:25px 40px 10px 40px; 
       border-bottom:4px solid var(--gold);
       display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
     }
     .header-left{display:flex;flex-direction:column}
     .title{
-      font-family:'Lexend';font-size:4.2rem;color:var(--primary);
+      font-family:'Lexend';font-size:4rem;color:var(--primary);
       margin:0;line-height:1;text-transform:uppercase;letter-spacing:2px;margin-left:20px;
     }
-    .meta{margin-top:45px;display:flex;flex-direction:column;gap:12px}
+    .meta{margin-top:35px;display:flex;flex-direction:column;gap:10px}
     .meta-row{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--dark)}
     .meta-row span{color:var(--primary);font-family:'Lexend';font-size:.9rem}
     .meta-row input{
       background:transparent;border:none;font-weight:800;font-size:1.1rem;color:var(--dark);
       width:140px;cursor:pointer;outline:none;
     }
-    .logo-box img{height:250px;width:auto;margin-top:-50px}
+    .logo-box img{height:220px;width:auto;margin-top:-40px}
 
-    .body{padding:40px 45px;flex:1;display:flex;flex-direction:column}
+    /* 🔥 CORPS AJUSTÉ */
+    .body{padding:25px 40px;flex:1;display:flex;flex-direction:column}
 
-    .grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:0;margin-bottom:50px}
-    .grid>div:first-child{border-right:3px solid var(--gold);padding-right:30px}
-    .client-section{padding-left:30px}
+    .grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:0;margin-bottom:30px}
+    .grid>div:first-child{border-right:3px solid var(--gold);padding-right:25px}
+    .client-section{padding-left:25px}
 
     .box-title{
       color:#000;font-size:.85rem;font-weight:800;display:inline-block;
-      padding-bottom:8px;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;line-height:1;
+      padding-bottom:6px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1px;line-height:1;
       box-shadow:inset 0 -3px 0 var(--primary);
     }
-    .company-info{font-size:.95rem;line-height:1.6;color:var(--dark)}
+    .company-info{font-size:.95rem;line-height:1.5;color:var(--dark)}
 
-    .input-group{display:flex;align-items:flex-start;margin-bottom:12px;border-bottom:1px dashed #ccc;padding-bottom:4px}
+    .input-group{display:flex;align-items:flex-start;margin-bottom:8px;border-bottom:1px dashed #ccc;padding-bottom:4px}
     .input-group label{
       font-weight:700;color:var(--dark);font-size:.85rem;min-width:145px;
       font-family:'Lexend';padding-top:5px;text-transform:uppercase;
@@ -186,7 +187,7 @@
       padding:5px 0 5px 10px;outline:none;
     }
 
-    .flow-box{border-bottom:1px dashed #ccc;margin-bottom:12px;padding-bottom:6px;cursor:text;display:block}
+    .flow-box{border-bottom:1px dashed #ccc;margin-bottom:8px;padding-bottom:6px;cursor:text;display:block}
     .flow-box label{font-weight:700;color:var(--dark);font-size:.85rem;font-family:'Lexend';text-transform:uppercase;display:inline;margin-right:5px}
     .flow-content{display:inline;font-weight:600;font-size:.95rem;color:#000;outline:none;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
     .flow-content:empty:before{content:'...';color:#aaa;font-weight:400}
@@ -195,14 +196,14 @@
     .phone-select{border:none;background:transparent;font-weight:800;font-size:.9rem;color:var(--primary);cursor:pointer;margin-right:8px;outline:none}
     .phone-input{flex:1;border:none;background:transparent;font-weight:600;font-size:.95rem;color:#000;outline:none;padding:5px 0 5px 10px}
 
-    table{width:100%;border-collapse:collapse;margin-top:20px}
+    table{width:100%;border-collapse:collapse;margin-top:15px}
     th{
-      text-align:left;padding:12px 8px;color:var(--primary);
+      text-align:left;padding:10px 6px;color:var(--primary);
       font-family:'Lexend';font-size:.85rem;border-bottom:none!important;
     }
     thead{position:relative}
     thead:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--primary)}
-    td{padding:12px 8px;border-bottom:1px solid #f0f0f0}
+    td{padding:10px 6px;border-bottom:1px solid #f0f0f0}
     td input{width:100%;border:none;font-weight:700;font-size:.95rem;background:transparent;outline:none}
 
     .delete-btn{
@@ -211,18 +212,18 @@
     }
     .delete-btn:hover{background:rgba(214,0,28,.10)}
 
-    .totals-section{display:flex;justify-content:flex-end;margin-top:40px}
-    .totals-box{width:260px;background:transparent;padding:15px;border-radius:8px;border:1px solid rgba(0,0,0,.05)}
-    .row{display:flex;justify-content:space-between;padding:8px 0;font-weight:700;color:#64748b;font-size:.9rem}
-    .row.final{color:var(--primary);font-size:1.15rem;border-top:2px solid var(--primary);margin-top:8px;padding-top:8px;font-family:'Lexend'}
+    .totals-section{display:flex;justify-content:flex-end;margin-top:25px}
+    .totals-box{width:250px;background:transparent;padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,.05)}
+    .row{display:flex;justify-content:space-between;padding:6px 0;font-weight:700;color:#64748b;font-size:.9rem}
+    .row.final{color:var(--primary);font-size:1.15rem;border-top:2px solid var(--primary);margin-top:6px;padding-top:6px;font-family:'Lexend'}
 
-    .payment-section{margin-top:50px;display:flex;justify-content:flex-start}
-    .payment-box{font-size:.9rem;color:var(--dark);background:rgba(255,241,241,.4);padding:20px;border-radius:8px;border-left:3px solid var(--gold);min-width:320px}
-    .payment-title{font-family:'Lexend';font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;font-size:.95rem;display:inline-block;border-bottom:2px solid var(--gold);padding-bottom:2px}
-    .payment-details{line-height:1.7;margin-top:8px}
+    .payment-section{margin-top:30px;display:flex;justify-content:flex-start}
+    .payment-box{font-size:.9rem;color:var(--dark);background:rgba(255,241,241,.4);padding:15px;border-radius:8px;border-left:3px solid var(--gold);min-width:320px}
+    .payment-title{font-family:'Lexend';font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:6px;font-size:.95rem;display:inline-block;border-bottom:2px solid var(--gold);padding-bottom:2px}
+    .payment-details{line-height:1.6;margin-top:6px}
     .bank-info{font-weight:800;color:#000;font-size:1rem}
 
-    .footer{padding:20px 45px;border-top:2px solid var(--gold);font-size:.8rem;color:#94a3b8;display:flex;justify-content:space-between;font-weight:700;margin-top:auto;gap:10px}
+    .footer{padding:15px 40px;border-top:2px solid var(--gold);font-size:.75rem;color:#94a3b8;display:flex;justify-content:space-between;font-weight:700;margin-top:auto;gap:10px}
     .no-print{display:block}
 
     /* Modal common */
@@ -267,7 +268,7 @@
         padding: 0 !important;
         display: block !important;
         background: #333;
-        /* 🔥 AJOUT IMPORTANT : Padding extra en bas pour le scroll */
+        /* Scroll important pour mobile seulement */
         padding-bottom: 150px !important;
         min-height: 100vh;
       }
@@ -522,7 +523,7 @@
         const scale = (screenWidth - 20) / originalWidth; 
         invoice.style.transform = `scale(${scale})`;
         
-        // 🔥 CALCUL CORRIGÉ POUR L'ESPACE EN BAS
+        // 🔥 CALCUL CORRIGÉ
         const newHeight = (invoice.offsetHeight * scale);
         wrap.style.height = newHeight + "px";
         
@@ -706,16 +707,19 @@
     }
 
     /* =========================
-       PDF & AUTO SAVE
+       PDF & AUTO SAVE (FIXED)
        ========================= */
     function downloadPDF() {
-      // 1. Sauvegarder d'abord
       saveCurrentInvoiceToHistory();
 
-      // 2. Générer PDF
       const element = document.getElementById('invoice');
+      const wrap = document.getElementById('invoiceWrap');
       const oldTransform = element.style.transform;
+      
+      // 🔥 FIX IMPORTANT: On reset le scale et le margin du Wrapper avant de générer
       element.style.transform = "none";
+      wrap.style.height = "auto";
+      wrap.style.marginBottom = "0"; // Enlever le vide en bas
 
       const btn = document.querySelector('.btn-pdf');
       const oldHTML = btn.innerHTML;
@@ -732,7 +736,7 @@
       html2pdf().from(element).set(opt).save().then(() => {
         btn.innerHTML = oldHTML;
         element.style.transform = oldTransform;
-        setTimeout(applyDesktopScale, 120);
+        setTimeout(applyDesktopScale, 120); // Remettre le mode mobile
       }).catch(err => {
         alert("Erreur: " + err);
         btn.innerHTML = oldHTML;
